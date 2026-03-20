@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Workout Flow Prototype</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', sans-serif; background: #0a0a0a; color: #e8e8e8; height: 100dvh; overflow: hidden; user-select: none; }
+
+  .header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: #1a1a1a; border-bottom: 1px solid #333; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; }
+  .header-left { display: flex; flex-direction: column; gap: 1px; flex: 1; cursor: pointer; }
+  .header-exercise { font-size: 16px; font-weight: 600; color: #fff; }
+  .header-progress { font-size: 11px; color: #888; }
+  .header-right { display: flex; align-items: center; gap: 8px; }
+  .header-timer { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; min-width: 44px; text-align: right; padding: 4px 8px; border-radius: 8px; }
+  .header-timer.resting { color: #f59e0b; background: rgba(245,158,11,0.1); }
+  .header-timer.ready { color: #22c55e; background: rgba(34,197,94,0.1); animation: pulse 1s infinite; }
+  .header-timer.hidden { display: none; }
+  .hr-badge { background: #ef4444; color: #fff; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 10px; display: flex; align-items: center; gap: 4px; }
+  .hr-badge::before { content: ''; width: 5px; height: 5px; background: #fff; border-radius: 50%; animation: pulse 1s infinite; }
+  .rest-done-badge { background: #22c55e; color: #000; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 10px; cursor: pointer; animation: pulse 1.5s infinite; display: none; }
+  .rest-done-badge.visible { display: block; }
+  .superset-badge { color: #a78bfa; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 10px; background: rgba(124,58,237,0.15); display: none; }
+  .superset-badge.visible { display: block; }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+  @keyframes chipFlash { 50%{transform:scale(0.92)} }
+
+  .carousel-container { position: fixed; top: 56px; bottom: 0; left: 0; right: 0; overflow: hidden; }
+  .carousel { display: flex; transition: transform 0.3s cubic-bezier(0.25,0.1,0.25,1); height: 100%; }
+  .carousel.dragging { transition: none; }
+  .slide { min-width: 100%; height: 100%; padding: 12px 16px; display: flex; flex-direction: column; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+
+  .superset-header { background: rgba(124,58,237,0.1); border: 1px solid rgba(124,58,237,0.3); border-radius: 8px; padding: 6px 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: #a78bfa; }
+  .superset-pip { width: 8px; height: 8px; background: #7c3aed; border-radius: 50%; flex-shrink: 0; }
+
+  .compact-sets { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .compact-set { background: #1a2e1a; color: #4ade80; font-size: 14px; padding: 6px 12px; border-radius: 8px; cursor: pointer; }
+  .compact-set:active { background: #2a4e2a; }
+
+  .info-bar { display: flex; gap: 10px; font-size: 14px; color: #888; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #1a1a1a; flex-wrap: wrap; }
+
+  .set-card { background: #111118; border: 1px solid #282838; border-radius: 14px; padding: 16px; flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  .set-card.resting { border-color: rgba(245,158,11,0.3); }
+  .set-card.ready-state { border-color: rgba(34,197,94,0.3); }
+  .set-card.superset-active { border-color: rgba(124,58,237,0.3); }
+  .set-label { font-size: 15px; color: #888; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
+  .set-label-tag { font-size: 13px; padding: 3px 10px; border-radius: 6px; font-weight: 600; }
+  .tag-resting { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  .tag-ready { background: rgba(34,197,94,0.15); color: #22c55e; }
+  .tag-superset { background: rgba(124,58,237,0.15); color: #a78bfa; }
+
+  .field-section { margin-bottom: 14px; }
+  .field-label { font-size: 14px; color: #777; margin-bottom: 5px; display: flex; justify-content: space-between; }
+  .field-label .last-val { color: #666; }
+  .field-row { display: flex; align-items: center; gap: 6px; }
+  .field-input { flex: 1; background: #0a0a14; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 22px; font-weight: 600; padding: 10px 14px; text-align: center; font-variant-numeric: tabular-nums; max-width: 140px; }
+  .field-input:focus { border-color: #3b82f6; outline: none; }
+  .field-unit { font-size: 15px; color: #666; min-width: 20px; }
+  .adj-chip { background: #1a1a2e; border: 1px solid #2a2a40; color: #8888cc; font-size: 15px; font-weight: 500; padding: 9px 14px; border-radius: 10px; cursor: pointer; white-space: nowrap; }
+  .adj-chip:active { animation: chipFlash 0.15s; }
+  .adj-chip.use-last { background: #1a2e1a; border-color: #2a4a2a; color: #4ade80; }
+
+  .rep-calc { background: #0d0d18; border: 1px solid #222; border-radius: 8px; padding: 10px 14px; margin-top: 8px; font-size: 14px; color: #888; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+  .rep-calc .est-val { color: #a5b4fc; font-weight: 600; font-size: 15px; }
+  .rep-table { margin-top: 6px; border: 1px solid #222; border-radius: 8px; overflow: hidden; }
+  .rep-table table { width: 100%; border-collapse: collapse; }
+  .rep-table th { background: #111118; color: #666; font-size: 12px; padding: 7px 10px; text-align: center; border-bottom: 1px solid #222; }
+  .rep-table td { padding: 8px 10px; text-align: center; font-size: 15px; color: #999; border-bottom: 1px solid #1a1a1a; font-variant-numeric: tabular-nums; }
+  .rep-table tr:last-child td { border-bottom: none; }
+  .rep-table tr.current-row td { color: #a5b4fc; font-weight: 600; background: rgba(59,130,246,0.08); }
+  .rep-table tr.origin-row td { color: #4ade80; background: rgba(34,197,94,0.06); }
+  .rep-table td:first-child { color: #ccc; font-weight: 500; text-align: right; }
+  .rep-table td:last-child { color: #666; font-size: 13px; }
+
+  /* rest bar lives OUTSIDE set-card so timer ticks can update it without rebuilding card */
+  .rest-bar-wrap { height: 3px; background: #222; border-radius: 2px; margin-bottom: 10px; overflow: hidden; }
+  .rest-bar-fill { height: 100%; border-radius: 2px; transition: width 1s linear; }
+  .rest-bar-wrap.resting .rest-bar-fill { background: #f59e0b; }
+  .rest-bar-wrap.done .rest-bar-fill { background: #22c55e; }
+
+  .rest-controls { display: flex; gap: 6px; justify-content: center; margin-bottom: 12px; }
+  .rest-ctrl { background: #1a1a1a; border: 1px solid #333; color: #999; font-size: 14px; padding: 8px 16px; border-radius: 8px; cursor: pointer; }
+  .rest-ctrl.skip { color: #fdba74; border-color: #9a3412; }
+
+  .confirm-btn { background: #3b82f6; color: #fff; border: none; border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 600; width: 100%; cursor: pointer; margin-top: auto; }
+  .confirm-btn:active { background: #2563eb; transform: scale(0.98); }
+  .confirm-btn.ready-btn { background: #22c55e; color: #000; }
+  .confirm-btn.superset-btn { background: #7c3aed; }
+  .confirm-btn:disabled { background: #333; color: #666; }
+  .remaining { font-size: 13px; color: #555; text-align: center; margin-top: 6px; }
+
+  .bottom-actions { display: flex; gap: 6px; padding-top: 8px; margin-top: 8px; }
+  .action-btn { flex: 1; background: #111; border: 1px solid #282828; color: #666; font-size: 13px; padding: 9px; border-radius: 8px; text-align: center; cursor: pointer; }
+  .action-btn:active { background: #1a1a1a; }
+
+  .done-view { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; gap: 8px; }
+  .done-text { font-size: 16px; color: #a5b4fc; font-weight: 600; }
+  .done-sub { color: #555; font-size: 12px; }
+
+  /* --- Session Sheet --- */
+  .sheet-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 98; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+  .sheet-backdrop.open { opacity: 1; pointer-events: auto; }
+  .sheet { position: fixed; top: 56px; left: 0; right: 0; background: #1a1a1a; border-radius: 0 0 16px 16px; z-index: 99; transform: translateY(-110%); transition: transform 0.3s cubic-bezier(0.25,0.1,0.25,1); max-height: 70vh; overflow-y: auto; }
+  .sheet.open { transform: translateY(0); }
+  .sheet-title { font-size: 15px; font-weight: 600; padding: 14px 16px 10px; display: flex; justify-content: space-between; align-items: center; }
+  .sheet-add-btn { background: #0d1f0d; border: 1px solid #1a4a1a; color: #4ade80; font-size: 13px; padding: 6px 14px; border-radius: 8px; cursor: pointer; }
+  .sheet-handle { width: 36px; height: 4px; background: #444; border-radius: 2px; margin: 10px auto 6px; }
+
+  /* Exercise row in sheet — tap to expand, not to navigate */
+  .sheet-ex { border-top: 1px solid #1e1e1e; }
+  .sheet-ex-row { display: flex; align-items: center; padding: 11px 16px; cursor: pointer; transition: background 0.15s; }
+  .sheet-ex-row:active { background: #222; }
+  .sheet-ex-row.current { background: #1a1a2e; }
+  .sheet-ex-name { flex: 1; font-size: 15px; }
+  .sheet-ex-sets { font-size: 14px; color: #888; margin-right: 8px; }
+  .sheet-ex-check { color: #4ade80; margin-right: 8px; }
+  .sheet-ex-chevron { color: #444; font-size: 12px; transition: transform 0.2s; }
+  .sheet-ex-chevron.open { transform: rotate(180deg); }
+  .sheet-ex-detail { display: none; padding: 8px 16px 12px; background: #111; border-top: 1px solid #1a1a1a; }
+  .sheet-ex-detail.open { display: block; }
+  .sheet-ex-detail-sets { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .sheet-ex-set-chip { background: #1a1a2e; color: #a5b4fc; font-size: 13px; padding: 4px 10px; border-radius: 6px; }
+  .sheet-ex-set-chip.empty { color: #444; background: #111118; }
+  .sheet-ex-nav { display: flex; justify-content: flex-end; }
+  .sheet-ex-nav-btn { background: #1a1a2e; border: 1px solid #2a2a40; color: #a5b4fc; font-size: 13px; padding: 6px 14px; border-radius: 8px; cursor: pointer; }
+  .sheet-ss-label { font-size: 11px; color: #a78bfa; padding: 8px 16px 2px; background: rgba(124,58,237,0.05); }
+  .sheet-end-row { display: flex; align-items: center; padding: 12px 16px; border-top: 1px solid #1e1e1e; cursor: pointer; color: #ef4444; font-size: 15px; }
+  .sheet-end-row:active { background: #1a0a0a; }
+
+  /* --- Add Exercise Sheet --- */
+  .add-sheet-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+  .add-sheet-backdrop.open { opacity: 1; pointer-events: auto; }
+  .add-sheet { position: fixed; bottom: 0; left: 0; right: 0; background: #1a1a1a; border-radius: 16px 16px 0 0; z-index: 201; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.25,0.1,0.25,1); max-height: 75vh; display: flex; flex-direction: column; }
+  .add-sheet.open { transform: translateY(0); }
+  .add-sheet-handle { width: 36px; height: 4px; background: #555; border-radius: 2px; margin: 10px auto 0; }
+  .add-sheet-title { font-size: 15px; font-weight: 600; padding: 12px 16px 8px; }
+  .add-search { margin: 0 16px 10px; background: #111; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 15px; padding: 10px 14px; }
+  .add-search::placeholder { color: #555; }
+  .add-results { flex: 1; overflow-y: auto; padding: 0 16px 16px; display: flex; flex-direction: column; gap: 4px; }
+  .add-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: #111; border-radius: 8px; cursor: pointer; }
+  .add-item:active { background: #1a1a1a; }
+  .add-item-name { font-size: 14px; }
+  .add-item-muscle { font-size: 12px; color: #666; }
+  .add-btn-chip { background: #1a2e1a; color: #4ade80; font-size: 12px; padding: 4px 10px; border-radius: 6px; }
+
+  /* --- End Session --- */
+  .end-sheet { position: fixed; inset: 0; background: #0a0a0a; z-index: 400; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.25,0.1,0.25,1); }
+  .end-sheet.open { transform: translateY(0); }
+  .end-header { padding: 20px 16px 0; display: flex; justify-content: space-between; align-items: center; }
+  .end-title { font-size: 20px; font-weight: 700; }
+  .end-back { color: #888; font-size: 14px; cursor: pointer; padding: 8px; }
+  .end-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 16px; }
+  .end-stat { background: #111118; border-radius: 12px; padding: 14px; text-align: center; }
+  .end-stat-val { font-size: 24px; font-weight: 700; }
+  .end-stat-label { font-size: 12px; color: #666; margin-top: 4px; }
+  .end-list { flex: 1; overflow-y: auto; padding: 0 16px; }
+  .end-ex { padding: 12px 0; border-bottom: 1px solid #1a1a1a; }
+  .end-ex-name { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .end-ex-sets { display: flex; flex-wrap: wrap; gap: 6px; }
+  .end-set-chip { background: #1a1a2e; color: #a5b4fc; font-size: 13px; padding: 4px 10px; border-radius: 6px; }
+  .end-save { margin: 16px; background: #22c55e; color: #000; border: none; border-radius: 14px; padding: 16px; font-size: 16px; font-weight: 700; cursor: pointer; }
+
+  .swipe-hint { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.08); color: #555; font-size: 11px; padding: 5px 12px; border-radius: 12px; pointer-events: none; transition: opacity 0.5s; }
+  .swipe-hint.hidden { opacity: 0; }
+
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; }
+  .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+  .modal { background: #1a1a1a; border-radius: 16px; padding: 20px; width: 85%; max-width: 340px; transform: scale(0.9); transition: transform 0.2s; }
+  .modal-backdrop.open .modal { transform: scale(1); }
+  .modal-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+  .modal-row { display: flex; gap: 12px; }
+  .modal-group { flex: 1; }
+  .modal-group label { font-size: 11px; color: #666; display: block; margin-bottom: 4px; }
+  .modal-group input { width: 100%; background: #0d0d1a; border: 1px solid #444; border-radius: 8px; color: #fff; font-size: 18px; font-weight: 600; padding: 10px; text-align: center; }
+  .modal-actions { display: flex; gap: 8px; margin-top: 16px; }
+  .modal-btn { flex: 1; padding: 10px; border-radius: 8px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .modal-btn.save { background: #3b82f6; color: #fff; }
+  .modal-btn.cancel { background: #333; color: #aaa; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left" id="headerTap">
+    <div class="header-exercise" id="headerExercise"></div>
+    <div class="header-progress" id="headerProgress"></div>
+  </div>
+  <div class="header-right">
+    <div class="superset-badge" id="supersetBadge"></div>
+    <div class="rest-done-badge" id="restDoneBadge">Rest done ✓</div>
+    <div class="hr-badge" id="hrBadge">142</div>
+    <div class="header-timer hidden" id="headerTimer"></div>
+  </div>
+</div>
+
+<div class="carousel-container">
+  <div class="carousel" id="carousel"></div>
+</div>
+<div class="swipe-hint" id="swipeHint">swipe left/right between exercises</div>
+
+<!-- SESSION SHEET -->
+<div class="sheet-backdrop" id="sheetBackdrop">
+  <div class="sheet" id="sheet">
+    <div class="sheet-title">
+      Session
+      <div class="sheet-add-btn" onclick="openAddSheet()">+ Add Exercise</div>
+    </div>
+    <div id="sheetContent"></div>
+    <div class="sheet-end-row" onclick="openEndSession();closeSheet()">End Session</div>
+    <div class="sheet-handle"></div>
+  </div>
+</div>
+
+<!-- ADD EXERCISE SHEET -->
+<div class="add-sheet-backdrop" id="addBackdrop">
+  <div class="add-sheet" id="addSheet">
+    <div class="add-sheet-handle"></div>
+    <div class="add-sheet-title">Add Exercise</div>
+    <input class="add-search" id="addSearch" placeholder="Search exercises..." oninput="filterEx()" autocomplete="off">
+    <div class="add-results" id="addResults"></div>
+  </div>
+</div>
+
+<!-- END SESSION -->
+<div class="end-sheet" id="endSheet">
+  <div class="end-header">
+    <div class="end-title">Session Complete 🎉</div>
+    <div class="end-back" onclick="closeEndSession()">← Back</div>
+  </div>
+  <div class="end-stats" id="endStats"></div>
+  <div class="end-list" id="endList"></div>
+  <button class="end-save" onclick="alert('Saved!')">Save & Finish</button>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-backdrop" id="editModal">
+  <div class="modal">
+    <div class="modal-title" id="editTitle">Edit Set</div>
+    <div class="modal-row">
+      <div class="modal-group"><label>Weight</label><input type="number" id="editWeight"></div>
+      <div class="modal-group"><label>Reps</label><input type="number" id="editReps"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn cancel" onclick="closeEditModal()">Cancel</button>
+      <button class="modal-btn save" onclick="saveEdit()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──
+let exercises = [
+  { name:'Bench Press',      muscle:'Chest',       last:{w:185,r:5},  planned:4, reps:5,  weight:185, rest:90,  ss:null },
+  { name:'Tricep Pushdown',  muscle:'Triceps',     last:{w:50,r:10},  planned:3, reps:10, weight:50,  rest:60,  ss:'A', ssOrder:0 },
+  { name:'Skull Crushers',   muscle:'Triceps',     last:{w:40,r:10},  planned:3, reps:10, weight:40,  rest:75,  ss:'A', ssOrder:1 },
+  { name:'Incline DB Press', muscle:'Upper Chest', last:{w:65,r:8},   planned:3, reps:8,  weight:65,  rest:75,  ss:null },
+  { name:'Cable Fly',        muscle:'Chest',       last:{w:30,r:12},  planned:3, reps:12, weight:30,  rest:60,  ss:null },
+];
+let state = exercises.map(ex => ({
+  completed:[], currentSet:1, total:ex.planned,
+  phase:'active', restRemaining:0, nextWeight:ex.weight,
+}));
+
+let currentSlide = 0;
+let restInterval = null;
+let restOriginSlide = null;
+let dragStartX=0, dragDelta=0, isDragging=false;
+let repTableOpen = {};
+let sheetExpanded = {}; // which exercises are expanded in sheet
+let supersetPendingRest = null;
+
+function partner(idx) {
+  const g = exercises[idx].ss;
+  if (!g) return -1;
+  return exercises.findIndex((e,i) => i!==idx && e.ss===g);
+}
+
+// ── FULL RENDER (structural changes) ──
+function render() {
+  const scrollTops = Array.from(document.querySelectorAll('.slide')).map(s=>s.scrollTop);
+  const focused = document.activeElement;
+  const focusedId = focused && focused.id ? focused.id : null;
+  const focusedVal = focused ? focused.value : null;
+
+  const carousel = document.getElementById('carousel');
+  carousel.innerHTML = '';
+  exercises.forEach((ex,i) => {
+    const slide = document.createElement('div');
+    slide.className = 'slide';
+    slide.innerHTML = buildSlide(ex, state[i], i);
+    carousel.appendChild(slide);
+  });
+  carousel.style.transform = `translateX(-${currentSlide*100}%)`;
+
+  // Restore scroll & focus
+  Array.from(document.querySelectorAll('.slide')).forEach((s,i)=>{ if(scrollTops[i]) s.scrollTop=scrollTops[i]; });
+  if (focusedId) {
+    const el = document.getElementById(focusedId);
+    if (el) { el.focus(); if(focusedVal!==null) el.value=focusedVal; }
+  }
+
+  updateHeader();
+  updateSheet();
+}
+
+// ── TIMER TICK (only update live elements, no DOM rebuild) ──
+function timerTick() {
+  const s = restOriginSlide !== null ? state[restOriginSlide] : null;
+  if (!s) return;
+
+  s.restRemaining--;
+  if (s.restRemaining <= 0) {
+    clearInterval(restInterval); restInterval = null;
+    s.phase = 'ready'; s.restRemaining = 0;
+    // Full render needed: button changes from "Resting..." to "Start Set"
+    render();
+    return;
+  }
+
+  // Update just the timer elements — no DOM rebuild
+  updateHeader();
+
+  // Update rest bar fill on origin slide (if visible)
+  const ex = exercises[restOriginSlide];
+  const pct = ((ex.rest - s.restRemaining) / ex.rest * 100).toFixed(1);
+  const bar = document.querySelector(`[data-restbar="${restOriginSlide}"] .rest-bar-fill`);
+  if (bar) bar.style.width = pct + '%';
+}
+
+function buildSlide(ex, s, idx) {
+  const partnerIdx = partner(idx);
+  const inSS = partnerIdx !== -1;
+  const partnerEx = inSS ? exercises[partnerIdx] : null;
+  const partnerS  = inSS ? state[partnerIdx]    : null;
+
+  // Completed chips
+  let chips = s.completed.length ? '<div class="compact-sets">' +
+    s.completed.map((c,si)=>`<div class="compact-set" onclick="openEditModal(${idx},${si})">S${si+1}: ${c.weight}×${c.reps}</div>`).join('') +
+    '</div>' : '';
+
+  if (s.currentSet > s.total) {
+    return `${chips}<div class="done-view"><div style="font-size:40px">🎉</div><div class="done-text">All Sets Complete</div><div class="done-sub">Swipe to next exercise</div></div>`;
+  }
+
+  const isResting = s.phase==='resting' && idx===restOriginSlide;
+  const isReady   = s.phase==='ready'   && idx===restOriginSlide;
+
+  // Superset bar
+  let ssBar = '';
+  if (inSS) {
+    const pDone = partnerS.currentSet > partnerS.total;
+    ssBar = `<div class="superset-header">
+      <div class="superset-pip"></div>
+      <span>Superset ${ex.ss} with <strong style="color:#c4b5fd">${partnerEx.name}</strong></span>
+      ${pDone ? '<span style="color:#4ade80;margin-left:auto;font-size:12px">✓ done</span>' : ''}
+    </div>`;
+  }
+
+  const info = `<div class="info-bar">
+    <span>${ex.muscle}</span>
+    <span>Last: ${ex.last.w} lb × ${ex.last.r}</span>
+    <span>${ex.rest}s rest</span>
+  </div>`;
+
+  // Rest bar (outside card so timer tick can update without rebuild)
+  let restBarHTML = '';
+  if (isResting) {
+    const pct = ((ex.rest - s.restRemaining) / ex.rest * 100).toFixed(1);
+    restBarHTML = `<div class="rest-bar-wrap resting" data-restbar="${idx}"><div class="rest-bar-fill" style="width:${pct}%"></div></div>`;
+  } else if (isReady) {
+    restBarHTML = `<div class="rest-bar-wrap done" data-restbar="${idx}"><div class="rest-bar-fill" style="width:100%"></div></div>`;
+  }
+
+  let tag = '';
+  if (isResting) tag=`<span class="set-label-tag tag-resting">Resting</span>`;
+  else if (isReady) tag=`<span class="set-label-tag tag-ready">Ready</span>`;
+  else if (inSS) tag=`<span class="set-label-tag tag-superset">SS-${ex.ss}</span>`;
+
+  let restCtrls = isResting ? `<div class="rest-controls">
+    <div class="rest-ctrl skip" onclick="skipRest(${idx})">Skip</div>
+    <div class="rest-ctrl" onclick="extendRest(${idx},-30)">−30s</div>
+    <div class="rest-ctrl" onclick="extendRest(${idx},30)">+30s</div>
+  </div>` : '';
+
+  // Rep equiv table (always shown — seeded from last session if no completed sets)
+  const prev = s.completed.length ? s.completed[s.completed.length-1] : {weight:ex.last.w, reps:ex.last.r};
+  const oneRM = prev.weight * (1 + prev.reps/30);
+  const tableId = `rt_${idx}`;
+  const base = Math.round(s.nextWeight/5)*5;
+  const wRange = [];
+  for (let w=base-20; w<=base+20; w+=5) { if(w>0 && w<oneRM) wRange.push(w); }
+  if (!wRange.includes(prev.weight)) wRange.push(prev.weight);
+  if (!wRange.includes(s.nextWeight)) wRange.push(s.nextWeight);
+  const rows = wRange
+    .map(w=>({w, reps:Math.max(1,Math.round((oneRM/w-1)*30)), cur:w===s.nextWeight, orig:w===prev.weight}))
+    .sort((a,b)=>a.reps-b.reps)
+    .map(({w,reps,cur,orig})=>{
+      const cls=cur?'current-row':orig?'origin-row':'';
+      const mk=cur?'←':orig?'last':'';
+      return `<tr class="${cls}"><td>${w} lb</td><td>${reps}</td><td>${mk}</td></tr>`;
+    }).join('');
+
+  const repCalc = `
+    <div class="rep-calc" onclick="toggleRT('${tableId}')">
+      <span><span style="color:#777">e1RM:</span> <span class="est-val">${Math.round(oneRM)} lb</span></span>
+      <span style="color:#555;font-size:13px">Equiv ▾</span>
+    </div>
+    <div class="rep-table" id="${tableId}" style="display:${repTableOpen[tableId]?'block':'none'}">
+      <table><tr><th>Weight</th><th>Reps</th><th></th></tr>${rows}</table>
+    </div>`;
+
+  const weightSection = `<div class="field-section">
+    <div class="field-label"><span>Weight</span><span class="last-val">last ${ex.last.w} lb</span></div>
+    <div class="field-row">
+      <div class="adj-chip" onclick="adjW(${idx},-2.5)">−2.5</div>
+      <input class="field-input" type="number" value="${s.nextWeight}" id="w_${idx}" onchange="syncW(${idx})">
+      <span class="field-unit">lb</span>
+      <div class="adj-chip" onclick="adjW(${idx},2.5)">+2.5</div>
+      <div class="adj-chip use-last" onclick="useLast(${idx})">Last</div>
+    </div>
+    ${repCalc}
+  </div>`;
+
+  const rLabel = (isResting||isReady) ? 'Target Reps' : 'Reps';
+  const rReadonly = (isResting||isReady) ? 'style="color:#888"' : '';
+  const rMinus = (isResting||isReady) ? `adjReps(${idx},-1)` : `adjRepsInput(${idx},-1)`;
+  const rPlus  = (isResting||isReady) ? `adjReps(${idx},1)`  : `adjRepsInput(${idx},1)`;
+  const repsSection = `<div class="field-section">
+    <div class="field-label"><span>${rLabel}</span><span class="last-val">last ${ex.last.r}</span></div>
+    <div class="field-row">
+      <div class="adj-chip" onclick="${rMinus}">−1</div>
+      <input class="field-input" type="number" value="${ex.reps}" id="r_${idx}" ${rReadonly}>
+      <span class="field-unit"></span>
+      <div class="adj-chip" onclick="${rPlus}">+1</div>
+    </div>
+  </div>`;
+
+  let btn = '';
+  if (isResting) {
+    btn = `<button class="confirm-btn" disabled>Resting...</button>`;
+  } else if (isReady) {
+    btn = `<button class="confirm-btn ready-btn" onclick="dismissReady(${idx})">Start Set ${s.currentSet}</button>`;
+  } else if (inSS && partnerS && partnerS.phase!=='resting' && partnerS.currentSet<=partnerS.total) {
+    btn = `<button class="confirm-btn superset-btn" onclick="confirmSet(${idx})">Log → ${partnerEx.name.split(' ')[0]}</button>`;
+  } else {
+    btn = `<button class="confirm-btn" onclick="confirmSet(${idx})">Log Set ${s.currentSet}</button>`;
+  }
+
+  const remaining = s.total - s.currentSet;
+  const cardCls = isResting?'set-card resting':isReady?'set-card ready-state':inSS?'set-card superset-active':'set-card';
+
+  const bottomActions = (!isResting && !isReady) ? `<div class="bottom-actions">
+    <div class="action-btn" onclick="addSet(${idx})">+ Set</div>
+    <div class="action-btn">Skip</div>
+    <div class="action-btn">Swap</div>
+  </div>` : '';
+
+  return `${ssBar}${chips}${info}${restBarHTML}
+    <div class="${cardCls}">
+      <div class="set-label"><span>Set ${s.currentSet} of ${s.total}</span>${tag}</div>
+      ${restCtrls}${weightSection}${repsSection}${btn}
+      ${remaining>0?`<div class="remaining">${remaining} more after this</div>`:''}
+    </div>${bottomActions}`;
+}
+
+// ── ACTIONS ──
+function confirmSet(idx) {
+  const ex=exercises[idx], s=state[idx];
+  const w = parseFloat(document.getElementById(`w_${idx}`)?.value ?? s.nextWeight);
+  const r = parseInt(document.getElementById(`r_${idx}`)?.value ?? ex.reps);
+  s.completed.push({weight:w, reps:r});
+  s.currentSet++;
+  s.nextWeight = w;
+
+  const p = partner(idx);
+  if (s.currentSet <= s.total) {
+    if (p !== -1 && state[p].currentSet <= state[p].total && state[p].phase !== 'resting') {
+      supersetPendingRest = {idx, duration:ex.rest};
+      currentSlide = p;
+      render();
+    } else {
+      startRest(idx, ex.rest);
+    }
+  } else {
+    // This exercise is done — if partner pending rest, now we rest
+    if (supersetPendingRest && supersetPendingRest.idx !== idx) {
+      const {idx:oi, duration} = supersetPendingRest;
+      supersetPendingRest = null;
+      startRest(oi, duration);
+    } else {
+      render();
+    }
+  }
+}
+
+function startRest(idx, duration) {
+  if (restInterval) clearInterval(restInterval);
+  state[idx].phase='resting';
+  state[idx].restRemaining=duration;
+  restOriginSlide=idx;
+  render(); // build rest UI once
+  restInterval = setInterval(timerTick, 1000);
+}
+
+function skipRest(idx) {
+  clearInterval(restInterval); restInterval=null;
+  state[idx].phase='ready'; state[idx].restRemaining=0;
+  render();
+}
+function extendRest(idx,d) { state[idx].restRemaining=Math.max(0,state[idx].restRemaining+d); }
+function dismissReady(idx) { state[idx].phase='active'; restOriginSlide=null; render(); }
+function addSet(idx) { state[idx].total++; render(); }
+
+function adjW(idx, delta) {
+  state[idx].nextWeight = Math.max(0, Math.round((state[idx].nextWeight+delta)*10)/10);
+  render();
+}
+function syncW(idx) {
+  const el=document.getElementById(`w_${idx}`);
+  if(el) { state[idx].nextWeight=parseFloat(el.value)||0; render(); }
+}
+function useLast(idx) { state[idx].nextWeight=exercises[idx].last.w; render(); }
+function toggleRT(id) { repTableOpen[id]=!repTableOpen[id]; render(); }
+function adjReps(idx,d) { exercises[idx].reps=Math.max(1,exercises[idx].reps+d); render(); }
+function adjRepsInput(idx,d) { const el=document.getElementById(`r_${idx}`); if(el) el.value=Math.max(1,parseInt(el.value||0)+d); }
+
+// ── HEADER ──
+function updateHeader() {
+  const ex=exercises[currentSlide], s=state[currentSlide];
+  document.getElementById('headerExercise').textContent = ex.name;
+  const sd=Math.min(s.currentSet,s.total);
+  document.getElementById('headerProgress').textContent = `Set ${sd} of ${s.total} · ${currentSlide+1}/${exercises.length}`;
+
+  const timer=document.getElementById('headerTimer');
+  const badge=document.getElementById('restDoneBadge');
+  const ssBadge=document.getElementById('supersetBadge');
+  const src = restOriginSlide!==null ? state[restOriginSlide] : null;
+
+  if (src && src.phase==='resting') {
+    const m=Math.floor(src.restRemaining/60), sec=src.restRemaining%60;
+    timer.textContent=`${m}:${String(sec).padStart(2,'0')}`;
+    timer.className='header-timer resting';
+  } else if (src && src.phase==='ready') {
+    timer.textContent='0:00'; timer.className='header-timer ready';
+  } else {
+    timer.className='header-timer hidden';
+  }
+
+  const offSlideReady = restOriginSlide!==null && currentSlide!==restOriginSlide && state[restOriginSlide]?.phase==='ready';
+  badge.className = offSlideReady ? 'rest-done-badge visible' : 'rest-done-badge';
+
+  const inSS = exercises[currentSlide].ss !== null;
+  ssBadge.className = inSS ? 'superset-badge visible' : 'superset-badge';
+  if (inSS) ssBadge.textContent = `⚡ SS-${exercises[currentSlide].ss}`;
+}
+
+// ── SESSION SHEET ──
+// Clicking an exercise expands inline view-only; "Go →" button navigates
+function updateSheet() {
+  const rendered = new Set();
+  let html = '';
+
+  exercises.forEach((ex,i) => {
+    if (rendered.has(i)) return;
+    const p = partner(i);
+
+    if (p !== -1 && !rendered.has(p)) {
+      // Superset group
+      html += `<div class="sheet-ss-label">⚡ Superset ${ex.ss}</div>`;
+      [i, p].forEach(idx => {
+        html += buildSheetExRow(idx);
+        rendered.add(idx);
+      });
+    } else if (p === -1) {
+      html += buildSheetExRow(i);
+      rendered.add(i);
+    }
+  });
+
+  document.getElementById('sheetContent').innerHTML = html;
+}
+
+function buildSheetExRow(idx) {
+  const ex=exercises[idx], s=state[idx];
+  const done=s.completed.length, allDone=s.currentSet>s.total;
+  const isCurrent=idx===currentSlide;
+  const expanded=sheetExpanded[idx];
+  const chevron=expanded?'▲':'▼';
+
+  // Completed sets or placeholders
+  const totalPlanned = s.total;
+  let setChips = '';
+  for (let si=0; si<totalPlanned; si++) {
+    if (si < done) {
+      const c=s.completed[si];
+      setChips += `<div class="sheet-ex-set-chip">${c.weight}×${c.reps}</div>`;
+    } else {
+      setChips += `<div class="sheet-ex-set-chip empty">—</div>`;
+    }
+  }
+
+  const detail = expanded ? `<div class="sheet-ex-detail open">
+    <div class="sheet-ex-detail-sets">${setChips}</div>
+    <div class="sheet-ex-nav">
+      <div class="sheet-ex-nav-btn" onclick="goToSlide(${idx});closeSheet()">Go to exercise →</div>
+    </div>
+  </div>` : `<div class="sheet-ex-detail"></div>`;
+
+  return `<div class="sheet-ex">
+    <div class="sheet-ex-row${isCurrent?' current':''}" onclick="toggleSheetEx(${idx})">
+      ${allDone?'<span class="sheet-ex-check">✓</span>':''}
+      <span class="sheet-ex-name">${ex.name}</span>
+      <span class="sheet-ex-sets">${done}/${s.total}</span>
+      <span class="sheet-ex-chevron${expanded?' open':''}">${chevron}</span>
+    </div>
+    ${detail}
+  </div>`;
+}
+
+function toggleSheetEx(idx) {
+  sheetExpanded[idx] = !sheetExpanded[idx];
+  updateSheet();
+}
+
+function openSheet() {
+  document.getElementById('sheetBackdrop').classList.add('open');
+  document.getElementById('sheet').classList.add('open');
+}
+function closeSheet() {
+  document.getElementById('sheetBackdrop').classList.remove('open');
+  document.getElementById('sheet').classList.remove('open');
+}
+
+// ── ADD EXERCISE ──
+const exLibrary = [
+  {name:'Pull-Ups', muscle:'Back'}, {name:'Barbell Row', muscle:'Back'},
+  {name:'Lat Pulldown', muscle:'Back'}, {name:'Overhead Press', muscle:'Shoulders'},
+  {name:'Lateral Raise', muscle:'Shoulders'}, {name:'Preacher Curl', muscle:'Biceps'},
+  {name:'Hammer Curl', muscle:'Biceps'}, {name:'Leg Press', muscle:'Quads'},
+  {name:'Romanian Deadlift', muscle:'Hamstrings'}, {name:'Calf Raise', muscle:'Calves'},
+];
+function openAddSheet() {
+  closeSheet();
+  document.getElementById('addBackdrop').classList.add('open');
+  document.getElementById('addSheet').classList.add('open');
+  document.getElementById('addSearch').value='';
+  filterEx();
+  setTimeout(()=>document.getElementById('addSearch').focus(), 300);
+}
+function closeAddSheet() {
+  document.getElementById('addBackdrop').classList.remove('open');
+  document.getElementById('addSheet').classList.remove('open');
+}
+function filterEx() {
+  const q=document.getElementById('addSearch').value.toLowerCase();
+  const list=exLibrary.filter(e=>!q||e.name.toLowerCase().includes(q)||e.muscle.toLowerCase().includes(q));
+  document.getElementById('addResults').innerHTML=list.map(e=>
+    `<div class="add-item" onclick="addExercise('${e.name}','${e.muscle}')">
+      <div><div class="add-item-name">${e.name}</div><div class="add-item-muscle">${e.muscle}</div></div>
+      <div class="add-btn-chip">+ Add</div>
+    </div>`
+  ).join('');
+}
+function addExercise(name, muscle) {
+  exercises.push({name, muscle, last:{w:45,r:10}, planned:3, reps:10, weight:45, rest:60, ss:null});
+  state.push({completed:[], currentSet:1, total:3, phase:'active', restRemaining:0, nextWeight:45});
+  closeAddSheet();
+  currentSlide=exercises.length-1;
+  render();
+}
+
+// ── END SESSION ──
+function openEndSession() {
+  const sets=state.reduce((n,s)=>n+s.completed.length,0);
+  const vol=state.reduce((v,s)=>v+s.completed.reduce((a,c)=>a+c.weight*c.reps,0),0);
+  document.getElementById('endStats').innerHTML=`
+    <div class="end-stat"><div class="end-stat-val">${sets}</div><div class="end-stat-label">Sets</div></div>
+    <div class="end-stat"><div class="end-stat-val">${vol.toLocaleString()}</div><div class="end-stat-label">Volume lb</div></div>
+    <div class="end-stat"><div class="end-stat-val">52m</div><div class="end-stat-label">Duration</div></div>`;
+  document.getElementById('endList').innerHTML=exercises.map((ex,i)=>{
+    const s=state[i]; if(!s.completed.length) return '';
+    return `<div class="end-ex"><div class="end-ex-name">${ex.name}</div>
+      <div class="end-ex-sets">${s.completed.map((c,si)=>`<div class="end-set-chip">S${si+1}: ${c.weight}×${c.reps}</div>`).join('')}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('endSheet').classList.add('open');
+}
+function closeEndSession() { document.getElementById('endSheet').classList.remove('open'); }
+
+// ── EDIT MODAL ──
+let editTarget=null;
+function openEditModal(exIdx,setIdx) {
+  editTarget={exIdx,setIdx};
+  const c=state[exIdx].completed[setIdx];
+  document.getElementById('editTitle').textContent=`Edit Set ${setIdx+1}`;
+  document.getElementById('editWeight').value=c.weight;
+  document.getElementById('editReps').value=c.reps;
+  document.getElementById('editModal').classList.add('open');
+}
+function closeEditModal() { document.getElementById('editModal').classList.remove('open'); editTarget=null; }
+function saveEdit() {
+  if(!editTarget) return;
+  state[editTarget.exIdx].completed[editTarget.setIdx]={
+    weight:parseFloat(document.getElementById('editWeight').value),
+    reps:parseInt(document.getElementById('editReps').value),
+  };
+  closeEditModal(); render();
+}
+
+// ── NAVIGATION ──
+function goToSlide(idx) {
+  currentSlide=Math.max(0,Math.min(idx,exercises.length-1));
+  document.getElementById('carousel').style.transform=`translateX(-${currentSlide*100}%)`;
+  updateHeader();
+}
+const cont=document.querySelector('.carousel-container');
+cont.addEventListener('touchstart',e=>{dragStartX=e.touches[0].clientX;isDragging=true;document.getElementById('carousel').classList.add('dragging');},{passive:true});
+cont.addEventListener('touchmove',e=>{if(!isDragging)return;dragDelta=e.touches[0].clientX-dragStartX;document.getElementById('carousel').style.transform=`translateX(${-(currentSlide*window.innerWidth)+dragDelta}px)`;},{passive:true});
+cont.addEventListener('touchend',finishDrag);
+cont.addEventListener('mousedown',e=>{dragStartX=e.clientX;isDragging=true;document.getElementById('carousel').classList.add('dragging');});
+cont.addEventListener('mousemove',e=>{if(!isDragging)return;dragDelta=e.clientX-dragStartX;document.getElementById('carousel').style.transform=`translateX(${-(currentSlide*window.innerWidth)+dragDelta}px)`;});
+cont.addEventListener('mouseup',finishDrag);
+cont.addEventListener('mouseleave',()=>{if(isDragging)finishDrag();});
+function finishDrag() {
+  if(!isDragging)return;
+  isDragging=false;
+  document.getElementById('carousel').classList.remove('dragging');
+  const t=window.innerWidth*0.2;
+  if(dragDelta<-t&&currentSlide<exercises.length-1) currentSlide++;
+  else if(dragDelta>t&&currentSlide>0) currentSlide--;
+  dragDelta=0; goToSlide(currentSlide);
+  document.getElementById('swipeHint').classList.add('hidden');
+}
+
+document.getElementById('headerTap').addEventListener('click', openSheet);
+document.getElementById('sheetBackdrop').addEventListener('click', e=>{if(e.target.id==='sheetBackdrop')closeSheet();});
+document.getElementById('addBackdrop').addEventListener('click', e=>{if(e.target.id==='addBackdrop')closeAddSheet();});
+document.getElementById('restDoneBadge').addEventListener('click', ()=>{if(restOriginSlide!==null)goToSlide(restOriginSlide);});
+
+render();
+setInterval(()=>{ document.getElementById('hrBadge').textContent=Math.floor(130+Math.random()*30); }, 3000);
+</script>
+</body>
+</html>
