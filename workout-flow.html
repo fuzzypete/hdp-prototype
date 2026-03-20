@@ -27,7 +27,7 @@
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
   @keyframes chipFlash { 50%{transform:scale(0.92)} }
 
-  .carousel-container { position: fixed; top: 56px; bottom: 0; left: 0; right: 0; overflow: hidden; }
+  .carousel-container { position: fixed; top: 56px; bottom: 56px; left: 0; right: 0; overflow: hidden; }
   .carousel { display: flex; transition: transform 0.3s cubic-bezier(0.25,0.1,0.25,1); height: 100%; }
   .carousel.dragging { transition: none; }
   .slide { min-width: 100%; height: 100%; padding: 12px 16px; display: flex; flex-direction: column; overflow-y: auto; -webkit-overflow-scrolling: touch; }
@@ -109,7 +109,7 @@
   /* --- Session Sheet --- */
   .sheet-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 98; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
   .sheet-backdrop.open { opacity: 1; pointer-events: auto; }
-  .sheet { position: fixed; top: 56px; left: 0; right: 0; background: #1a1a1a; border-radius: 0 0 16px 16px; z-index: 99; transform: translateY(-110%); transition: transform 0.3s cubic-bezier(0.25,0.1,0.25,1); max-height: 70vh; overflow-y: auto; }
+  .sheet { position: fixed; top: 56px; left: 0; right: 0; background: #1a1a1a; border-radius: 0 0 16px 16px; z-index: 99; transform: translateY(-110%); transition: transform 0.3s cubic-bezier(0.25,0.1,0.25,1); max-height: calc(100dvh - 112px); overflow-y: auto; }
   .sheet.open { transform: translateY(0); }
   .sheet-title { font-size: 15px; font-weight: 600; padding: 14px 16px 10px; display: flex; justify-content: space-between; align-items: center; }
   .sheet-add-btn { background: #0d1f0d; border: 1px solid #1a4a1a; color: #4ade80; font-size: 13px; padding: 6px 14px; border-radius: 8px; cursor: pointer; }
@@ -179,8 +179,85 @@
   .end-set-chip { background: #1a1a2e; color: #a5b4fc; font-size: 13px; padding: 4px 10px; border-radius: 6px; }
   .end-save { margin: 16px; background: #22c55e; color: #000; border: none; border-radius: 14px; padding: 16px; font-size: 16px; font-weight: 700; cursor: pointer; }
 
-  .swipe-hint { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.08); color: #555; font-size: 11px; padding: 5px 12px; border-radius: 12px; pointer-events: none; transition: opacity 0.5s; }
+  .swipe-hint { position: fixed; bottom: 72px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.08); color: #555; font-size: 11px; padding: 5px 12px; border-radius: 12px; pointer-events: none; transition: opacity 0.5s; }
   .swipe-hint.hidden { opacity: 0; }
+
+  /* ── Bottom Nav ── */
+  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 56px; background: #111; border-top: 1px solid #222; display: flex; z-index: 200; }
+  .bnav-tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer; color: #555; -webkit-tap-highlight-color: transparent; }
+  .bnav-tab.active { color: #3b82f6; }
+  .bnav-tab svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .bnav-tab span { font-size: 10px; font-weight: 500; }
+
+  /* ── Shared screen container ── */
+  .screen { position: fixed; top: 0; bottom: 56px; left: 0; right: 0; display: none; flex-direction: column; overflow: hidden; }
+  .screen.active { display: flex; }
+  .screen-hdr { background: #111; border-bottom: 1px solid #222; padding: 14px 16px 12px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .screen-title { font-size: 18px; font-weight: 700; }
+  .screen-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px; }
+
+  /* ── Home (no session) ── */
+  .home-greeting { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .home-sub { font-size: 14px; color: #666; margin-bottom: 28px; }
+  .home-start-btn { background: #3b82f6; color: #fff; border: none; border-radius: 16px; padding: 18px; font-size: 17px; font-weight: 700; width: 100%; cursor: pointer; margin-bottom: 24px; }
+  .home-section { font-size: 12px; color: #555; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .home-template { background: #111118; border: 1px solid #222; border-radius: 12px; padding: 14px 16px; margin-bottom: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .home-template:active { background: #1a1a28; }
+  .home-template-name { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+  .home-template-meta { font-size: 12px; color: #666; }
+  .home-template-arrow { color: #444; font-size: 18px; }
+  .home-last { background: #111118; border-radius: 12px; padding: 14px 16px; margin-bottom: 24px; }
+  .home-last-label { font-size: 12px; color: #555; margin-bottom: 6px; }
+  .home-last-name { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .home-last-stats { font-size: 13px; color: #777; }
+
+  /* ── Cardio screen ── */
+  .cardio-polar-row { display: flex; align-items: center; gap: 8px; background: #111118; border: 1px solid #1e1e2e; border-radius: 10px; padding: 10px 14px; margin-bottom: 20px; }
+  .polar-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .polar-dot.connected { background: #22c55e; animation: pulse 1.5s infinite; }
+  .polar-dot.disconnected { background: #555; }
+  .polar-status-text { flex: 1; font-size: 13px; }
+  .polar-device-name { font-size: 12px; color: #555; }
+  .cardio-hr-hero { text-align: center; padding: 28px 0 20px; }
+  .cardio-hr-num { font-size: 88px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
+  .cardio-hr-num.no-signal { color: #333; font-size: 64px; padding-top: 12px; }
+  .cardio-hr-unit { font-size: 16px; color: #666; margin-top: 4px; }
+  .cardio-zone { display: inline-block; font-size: 13px; font-weight: 600; padding: 4px 14px; border-radius: 20px; margin-top: 8px; }
+  .zone-fat { background: rgba(59,130,246,0.15); color: #60a5fa; }
+  .zone-cardio { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  .zone-peak { background: rgba(239,68,68,0.15); color: #f87171; }
+  .cardio-stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+  .cardio-stat { background: #111118; border-radius: 12px; padding: 14px; text-align: center; }
+  .cardio-stat-val { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .cardio-stat-label { font-size: 12px; color: #666; margin-top: 3px; }
+  .cardio-ctrl-row { display: flex; gap: 12px; }
+  .cardio-btn { flex: 1; border: none; border-radius: 14px; padding: 16px; font-size: 16px; font-weight: 700; cursor: pointer; }
+  .cardio-btn.start { background: #22c55e; color: #000; }
+  .cardio-btn.pause { background: #f59e0b; color: #000; }
+  .cardio-btn.stop { background: #ef4444; color: #fff; }
+  .cardio-btn.resume { background: #3b82f6; color: #fff; }
+
+  /* ── Settings screen ── */
+  .settings-section { font-size: 12px; color: #555; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin: 20px 0 10px; }
+  .settings-section:first-child { margin-top: 0; }
+  .settings-row { background: #111118; border-radius: 12px; margin-bottom: 2px; overflow: hidden; }
+  .settings-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; border-bottom: 1px solid #1a1a1a; }
+  .settings-item:last-child { border-bottom: none; }
+  .settings-item:active { background: #1a1a28; }
+  .settings-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .settings-label { flex: 1; }
+  .settings-name { font-size: 15px; }
+  .settings-desc { font-size: 12px; color: #666; margin-top: 2px; }
+  .settings-status { font-size: 13px; font-weight: 500; }
+  .status-connected { color: #22c55e; }
+  .status-enabled { color: #22c55e; }
+  .status-off { color: #555; }
+  .settings-chevron { color: #444; font-size: 14px; margin-left: 4px; }
+  .settings-toggle { width: 44px; height: 26px; background: #22c55e; border-radius: 13px; position: relative; cursor: pointer; flex-shrink: 0; transition: background 0.2s; }
+  .settings-toggle.off { background: #333; }
+  .settings-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; background: #fff; border-radius: 50%; transition: transform 0.2s; }
+  .settings-toggle.off::after { transform: none; }
+  .settings-toggle:not(.off)::after { transform: translateX(18px); }
 
   .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; }
   .modal-backdrop.open { opacity: 1; pointer-events: auto; }
@@ -248,7 +325,7 @@
   </div>
   <div class="end-stats" id="endStats"></div>
   <div class="end-list" id="endList"></div>
-  <button class="end-save" onclick="alert('Saved!')">Save & Finish</button>
+  <button class="end-save" onclick="saveAndFinish()">Save & Finish</button>
 </div>
 
 <!-- EDIT MODAL -->
@@ -730,6 +807,11 @@ function openEndSession() {
   document.getElementById('endSheet').classList.add('open');
 }
 function closeEndSession() { document.getElementById('endSheet').classList.remove('open'); }
+function saveAndFinish() {
+  closeEndSession();
+  sessionActive = false;
+  switchTab('workout');
+}
 
 // ── EDIT MODAL ──
 let editTarget=null;
@@ -784,7 +866,288 @@ document.getElementById('addBackdrop').addEventListener('click', e=>{if(e.target
 document.getElementById('restDoneBadge').addEventListener('click', ()=>{if(restOriginSlide!==null)goToSlide(restOriginSlide);});
 
 render();
-setInterval(()=>{ document.getElementById('hrBadge').textContent=Math.floor(130+Math.random()*30); }, 3000);
+setInterval(()=>{
+  const hr = Math.floor(130+Math.random()*30);
+  document.getElementById('hrBadge').textContent = hr;
+  if(currentScreen==='cardio') updateCardioHr(hr);
+}, 3000);
+
+// ── SCREEN / TAB SWITCHING ──
+let currentScreen = 'workout';
+let sessionActive = true;
+
+function switchTab(tab) {
+  currentScreen = tab;
+  // show/hide workout UI
+  const workoutVisible = tab === 'workout' && sessionActive;
+  document.querySelector('.header').style.display = workoutVisible ? '' : 'none';
+  document.querySelector('.carousel-container').style.display = workoutVisible ? '' : 'none';
+  document.getElementById('swipeHint').style.display = workoutVisible ? '' : 'none';
+  // home screen (workout tab, no session)
+  document.getElementById('homeScreen').classList.toggle('active', tab === 'workout' && !sessionActive);
+  document.getElementById('cardioScreen').classList.toggle('active', tab === 'cardio');
+  document.getElementById('settingsScreen').classList.toggle('active', tab === 'settings');
+  // close sheet if open
+  if(tab !== 'workout') { closeSheet(); }
+  // update nav highlight
+  document.querySelectorAll('.bnav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+
+function startSessionFromHome() {
+  sessionActive = true;
+  switchTab('workout');
+}
+
+// ── CARDIO ──
+let cardioRunning = false, cardioPaused = false, cardioSecs = 0, cardioInterval = null;
+let cardioHr = 72;
+
+function updateCardioHr(hr) {
+  cardioHr = hr;
+  if(cardioRunning && !cardioPaused) {
+    document.getElementById('cardioHrNum').textContent = hr;
+    document.getElementById('cardioHrNum').className = 'cardio-hr-num';
+    const zone = hr < 115 ? 'Fat Burn' : hr < 145 ? 'Cardio' : 'Peak';
+    const cls  = hr < 115 ? 'zone-fat' : hr < 145 ? 'zone-cardio' : 'zone-peak';
+    document.getElementById('cardioZone').textContent = zone;
+    document.getElementById('cardioZone').className = 'cardio-zone ' + cls;
+  }
+}
+
+function cardioTick() {
+  cardioSecs++;
+  const m = String(Math.floor(cardioSecs/60)).padStart(2,'0');
+  const s = String(cardioSecs%60).padStart(2,'0');
+  document.getElementById('cardioDuration').textContent = m+':'+s;
+  // rough cal estimate: 10 cal/min at cardio HR
+  document.getElementById('cardioCal').textContent = Math.round(cardioSecs/60 * 10);
+}
+
+function startCardio() {
+  cardioRunning = true; cardioPaused = false;
+  cardioInterval = setInterval(cardioTick, 1000);
+  document.getElementById('cardioHrNum').textContent = cardioHr;
+  document.getElementById('cardioHrNum').className = 'cardio-hr-num';
+  renderCardioControls();
+}
+function pauseCardio() {
+  cardioPaused = true; clearInterval(cardioInterval);
+  renderCardioControls();
+}
+function resumeCardio() {
+  cardioPaused = false; cardioInterval = setInterval(cardioTick, 1000);
+  renderCardioControls();
+}
+function stopCardio() {
+  cardioRunning = false; cardioPaused = false; cardioSecs = 0;
+  clearInterval(cardioInterval);
+  document.getElementById('cardioHrNum').textContent = '—';
+  document.getElementById('cardioHrNum').className = 'cardio-hr-num no-signal';
+  document.getElementById('cardioDuration').textContent = '00:00';
+  document.getElementById('cardioCal').textContent = '0';
+  document.getElementById('cardioZone').textContent = '';
+  renderCardioControls();
+}
+function renderCardioControls() {
+  const el = document.getElementById('cardioCtrlRow');
+  if(!cardioRunning) {
+    el.innerHTML = `<button class="cardio-btn start" onclick="startCardio()">Start</button>`;
+  } else if(cardioPaused) {
+    el.innerHTML = `<button class="cardio-btn resume" onclick="resumeCardio()">Resume</button><button class="cardio-btn stop" onclick="stopCardio()">End</button>`;
+  } else {
+    el.innerHTML = `<button class="cardio-btn pause" onclick="pauseCardio()">Pause</button><button class="cardio-btn stop" onclick="stopCardio()">End</button>`;
+  }
+}
+
+// ── SETTINGS TOGGLES ──
+const settingsState = { appleHealth: true, strava: false, garmin: false };
+function toggleSetting(key) {
+  settingsState[key] = !settingsState[key];
+  document.getElementById('toggle-'+key).classList.toggle('off', !settingsState[key]);
+}
 </script>
+
+<!-- ── HOME SCREEN (no active session) ── -->
+<div class="screen" id="homeScreen">
+  <div class="screen-hdr">
+    <div class="screen-title">Workout</div>
+  </div>
+  <div class="screen-body">
+    <div class="home-greeting">Good morning, Pete</div>
+    <div class="home-sub">Friday · March 20</div>
+    <button class="home-start-btn" onclick="startSessionFromHome()">Start Workout</button>
+
+    <div class="home-section">Last Session</div>
+    <div class="home-last">
+      <div class="home-last-label">Yesterday · 58m</div>
+      <div class="home-last-name">Push A — Chest + Triceps</div>
+      <div class="home-last-stats">16 sets · 12,340 lb volume</div>
+    </div>
+
+    <div class="home-section">Templates</div>
+    <div class="home-template" onclick="startSessionFromHome()">
+      <div>
+        <div class="home-template-name">Push A — Chest + Triceps</div>
+        <div class="home-template-meta">5 exercises · ~55 min</div>
+      </div>
+      <div class="home-template-arrow">›</div>
+    </div>
+    <div class="home-template" onclick="startSessionFromHome()">
+      <div>
+        <div class="home-template-name">Pull — Back + Biceps</div>
+        <div class="home-template-meta">6 exercises · ~60 min</div>
+      </div>
+      <div class="home-template-arrow">›</div>
+    </div>
+    <div class="home-template" onclick="startSessionFromHome()">
+      <div>
+        <div class="home-template-name">Legs</div>
+        <div class="home-template-meta">5 exercises · ~70 min</div>
+      </div>
+      <div class="home-template-arrow">›</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CARDIO SCREEN ── -->
+<div class="screen" id="cardioScreen">
+  <div class="screen-hdr">
+    <div class="screen-title">Cardio</div>
+    <div class="hr-badge" id="cardioHrBadge">142</div>
+  </div>
+  <div class="screen-body">
+    <!-- Polar connection status -->
+    <div class="cardio-polar-row">
+      <div class="polar-dot connected"></div>
+      <div>
+        <div class="polar-status-text" style="color:#e8e8e8">Polar H10 connected</div>
+        <div class="polar-device-name">B5:A2:3C:11:88:FD</div>
+      </div>
+    </div>
+
+    <!-- Big HR display -->
+    <div class="cardio-hr-hero">
+      <div class="cardio-hr-num no-signal" id="cardioHrNum">—</div>
+      <div class="cardio-hr-unit">BPM</div>
+      <div class="cardio-zone" id="cardioZone"></div>
+    </div>
+
+    <!-- Duration + Calories -->
+    <div class="cardio-stats-row">
+      <div class="cardio-stat">
+        <div class="cardio-stat-val" id="cardioDuration">00:00</div>
+        <div class="cardio-stat-label">Duration</div>
+      </div>
+      <div class="cardio-stat">
+        <div class="cardio-stat-val" id="cardioCal">0</div>
+        <div class="cardio-stat-label">Cal (est)</div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="cardio-ctrl-row" id="cardioCtrlRow">
+      <button class="cardio-btn start" onclick="startCardio()">Start</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── SETTINGS SCREEN ── -->
+<div class="screen" id="settingsScreen">
+  <div class="screen-hdr">
+    <div class="screen-title">Settings</div>
+  </div>
+  <div class="screen-body">
+
+    <div class="settings-section">Device Integrations</div>
+    <div class="settings-row">
+      <div class="settings-item">
+        <div class="settings-icon" style="background:#1a1028">❤️</div>
+        <div class="settings-label">
+          <div class="settings-name">Polar H10</div>
+          <div class="settings-desc">B5:A2:3C:11:88:FD</div>
+        </div>
+        <span class="settings-status status-connected">Connected</span>
+        <span class="settings-chevron">›</span>
+      </div>
+      <div class="settings-item">
+        <div class="settings-icon" style="background:#0a1a2e">⌚</div>
+        <div class="settings-label">
+          <div class="settings-name">Apple Watch</div>
+          <div class="settings-desc">Not paired</div>
+        </div>
+        <span class="settings-status status-off">Off</span>
+        <span class="settings-chevron">›</span>
+      </div>
+    </div>
+
+    <div class="settings-section">App Integrations</div>
+    <div class="settings-row">
+      <div class="settings-item">
+        <div class="settings-icon" style="background:#1a0a0e">❤️‍🔥</div>
+        <div class="settings-label">
+          <div class="settings-name">Apple Health</div>
+          <div class="settings-desc">Sync workouts + HR</div>
+        </div>
+        <div class="settings-toggle" id="toggle-appleHealth" onclick="toggleSetting('appleHealth')"></div>
+      </div>
+      <div class="settings-item">
+        <div class="settings-icon" style="background:#150a00">🏃</div>
+        <div class="settings-label">
+          <div class="settings-name">Strava</div>
+          <div class="settings-desc">Tap to connect</div>
+        </div>
+        <div class="settings-toggle off" id="toggle-strava" onclick="toggleSetting('strava')"></div>
+      </div>
+      <div class="settings-item">
+        <div class="settings-icon" style="background:#001a10">📡</div>
+        <div class="settings-label">
+          <div class="settings-name">Garmin Connect</div>
+          <div class="settings-desc">Tap to connect</div>
+        </div>
+        <div class="settings-toggle off" id="toggle-garmin" onclick="toggleSetting('garmin')"></div>
+      </div>
+    </div>
+
+    <div class="settings-section">Data</div>
+    <div class="settings-row">
+      <div class="settings-item">
+        <div class="settings-icon" style="background:#0a1a0a">📊</div>
+        <div class="settings-label">
+          <div class="settings-name">HDP Data Pipeline</div>
+          <div class="settings-desc">Last sync 14m ago</div>
+        </div>
+        <span class="settings-status status-connected">Active</span>
+        <span class="settings-chevron">›</span>
+      </div>
+      <div class="settings-item">
+        <div class="settings-icon" style="background:#1a1a0a">📤</div>
+        <div class="settings-label">
+          <div class="settings-name">Export Data</div>
+          <div class="settings-desc">CSV / JSON</div>
+        </div>
+        <span class="settings-chevron">›</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── BOTTOM NAV ── -->
+<div class="bottom-nav">
+  <div class="bnav-tab active" id="tab-workout" onclick="switchTab('workout')">
+    <svg viewBox="0 0 24 24"><path d="M6.5 6.5h11M6.5 17.5h11M4 12h16M8 9V6M8 18v-3M16 9V6M16 18v-3"/></svg>
+    <span>Workout</span>
+  </div>
+  <div class="bnav-tab" id="tab-cardio" onclick="switchTab('cardio')">
+    <svg viewBox="0 0 24 24"><path d="M12 21C12 21 3 14.5 3 8.5a4.5 4.5 0 0 1 9-0.5 4.5 4.5 0 0 1 9 0.5C21 14.5 12 21 12 21z"/></svg>
+    <span>Cardio</span>
+  </div>
+  <div class="bnav-tab" id="tab-settings" onclick="switchTab('settings')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    <span>Settings</span>
+  </div>
+</div>
+
 </body>
 </html>
