@@ -51,16 +51,23 @@
   .tag-ready { background: rgba(34,197,94,0.15); color: #22c55e; }
   .tag-superset { background: rgba(124,58,237,0.15); color: #a78bfa; }
 
-  .field-section { margin-bottom: 14px; }
-  .field-label { font-size: 14px; color: #777; margin-bottom: 5px; display: flex; justify-content: space-between; }
-  .field-label .last-val { color: #666; }
-  .field-row { display: flex; align-items: center; gap: 6px; }
-  .field-input { flex: 1; background: #0a0a14; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 22px; font-weight: 600; padding: 10px 14px; text-align: center; font-variant-numeric: tabular-nums; max-width: 140px; }
+  /* Two-column field grid: weight left, reps right — same structure */
+  .fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .field-col { display: flex; flex-direction: column; gap: 5px; }
+  .field-label { font-size: 13px; color: #666; display: flex; justify-content: space-between; align-items: baseline; }
+  .field-label .field-title { font-size: 14px; color: #888; }
+  .field-row { display: flex; align-items: center; gap: 5px; }
+  .field-input { flex: 1; background: #0a0a14; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 22px; font-weight: 600; padding: 10px 8px; text-align: center; font-variant-numeric: tabular-nums; min-width: 0; }
   .field-input:focus { border-color: #3b82f6; outline: none; }
-  .field-unit { font-size: 15px; color: #666; min-width: 20px; }
-  .adj-chip { background: #1a1a2e; border: 1px solid #2a2a40; color: #8888cc; font-size: 15px; font-weight: 500; padding: 9px 14px; border-radius: 10px; cursor: pointer; white-space: nowrap; }
+  .field-unit { font-size: 13px; color: #555; }
+  .adj-chip { background: #1a1a2e; border: 1px solid #2a2a40; color: #8888cc; font-size: 14px; font-weight: 500; padding: 9px 11px; border-radius: 10px; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
   .adj-chip:active { animation: chipFlash 0.15s; }
-  .adj-chip.use-last { background: #1a2e1a; border-color: #2a4a2a; color: #4ade80; }
+  /* Tappable last-value pills — tap to apply */
+  .last-refs { display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
+  .last-ref { font-size: 12px; padding: 3px 8px; border-radius: 6px; cursor: pointer; border: 1px solid transparent; }
+  .last-ref.session { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); color: #93c5fd; }
+  .last-ref.history { background: rgba(255,255,255,0.04); border-color: #2a2a2a; color: #666; }
+  .last-ref:active { opacity: 0.7; }
 
   .rep-calc { background: #0d0d18; border: 1px solid #222; border-radius: 8px; padding: 10px 14px; margin-top: 8px; font-size: 14px; color: #888; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
   .rep-calc .est-val { color: #a5b4fc; font-weight: 600; font-size: 15px; }
@@ -118,11 +125,22 @@
   .sheet-ex-check { color: #4ade80; margin-right: 8px; }
   .sheet-ex-chevron { color: #444; font-size: 12px; transition: transform 0.2s; }
   .sheet-ex-chevron.open { transform: rotate(180deg); }
-  .sheet-ex-detail { display: none; padding: 8px 16px 12px; background: #111; border-top: 1px solid #1a1a1a; }
+  .sheet-ex-detail { display: none; background: #0e0e14; border-top: 1px solid #1a1a1a; }
   .sheet-ex-detail.open { display: block; }
-  .sheet-ex-detail-sets { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-  .sheet-ex-set-chip { background: #1a1a2e; color: #a5b4fc; font-size: 13px; padding: 4px 10px; border-radius: 6px; }
-  .sheet-ex-set-chip.empty { color: #444; background: #111118; }
+  .sheet-ex-set-list { display: flex; flex-direction: column; }
+  .sheet-ex-set-row { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-bottom: 1px solid #1a1a1a; }
+  .sheet-ex-set-row:last-of-type { border-bottom: none; }
+  .sheet-ex-set-row.done-row { background: rgba(34,197,94,0.06); }
+  .sheet-ex-set-row.planned-row { background: transparent; }
+  .sheet-ex-set-icon { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; }
+  .sheet-ex-set-num { font-size: 13px; color: #555; width: 34px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+  .sheet-ex-set-vals { flex: 1; font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .sheet-ex-set-row.done-row .sheet-ex-set-vals { color: #e8e8e8; }
+  .sheet-ex-set-row.planned-row .sheet-ex-set-vals { color: #3a3a4a; }
+  .sheet-ex-set-row.planned-row .sheet-ex-set-num { color: #333; }
+  .sheet-ex-set-tag { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 5px; flex-shrink: 0; }
+  .sheet-ex-set-tag.done-tag { background: rgba(34,197,94,0.15); color: #4ade80; }
+  .sheet-ex-set-tag.plan-tag { background: rgba(255,255,255,0.04); color: #333; }
   .sheet-ex-nav { display: flex; justify-content: flex-end; }
   .sheet-ex-nav-btn { background: #1a1a2e; border: 1px solid #2a2a40; color: #a5b4fc; font-size: 13px; padding: 6px 14px; border-radius: 8px; cursor: pointer; }
   .sheet-ss-label { font-size: 11px; color: #a78bfa; padding: 8px 16px 2px; background: rgba(124,58,237,0.05); }
@@ -411,29 +429,46 @@ function buildSlide(ex, s, idx) {
       <table><tr><th>Weight</th><th>Reps</th><th></th></tr>${rows}</table>
     </div>`;
 
-  const weightSection = `<div class="field-section">
-    <div class="field-label"><span>Weight</span><span class="last-val">last ${ex.last.w} lb</span></div>
-    <div class="field-row">
-      <div class="adj-chip" onclick="adjW(${idx},-2.5)">−2.5</div>
-      <input class="field-input" type="number" value="${s.nextWeight}" id="w_${idx}" onchange="syncW(${idx})">
-      <span class="field-unit">lb</span>
-      <div class="adj-chip" onclick="adjW(${idx},2.5)">+2.5</div>
-      <div class="adj-chip use-last" onclick="useLast(${idx})">Last</div>
-    </div>
-    ${repCalc}
-  </div>`;
+  // Session-last = most recent completed set this session (if any)
+  const sessionLast = s.completed.length ? s.completed[s.completed.length-1] : null;
+  // Historical last = previous session data
+  const histLast = ex.last;
 
-  const rLabel = (isResting||isReady) ? 'Target Reps' : 'Reps';
+  // Weight last-ref pills
+  const wLastRefs = [
+    sessionLast ? `<span class="last-ref session" onclick="applyW(${idx},${sessionLast.weight})" title="This session">S: ${sessionLast.weight} lb</span>` : '',
+    `<span class="last-ref history" onclick="applyW(${idx},${histLast.w})" title="Previous session">Prev: ${histLast.w} lb</span>`,
+  ].filter(Boolean).join('');
+
+  // Reps last-ref pills
+  const rLastRefs = [
+    sessionLast ? `<span class="last-ref session" onclick="applyR(${idx},${sessionLast.reps})" title="This session">S: ${sessionLast.reps}</span>` : '',
+    `<span class="last-ref history" onclick="applyR(${idx},${histLast.r})" title="Previous session">Prev: ${histLast.r}</span>`,
+  ].filter(Boolean).join('');
+
   const rReadonly = (isResting||isReady) ? 'style="color:#888"' : '';
   const rMinus = (isResting||isReady) ? `adjReps(${idx},-1)` : `adjRepsInput(${idx},-1)`;
   const rPlus  = (isResting||isReady) ? `adjReps(${idx},1)`  : `adjRepsInput(${idx},1)`;
-  const repsSection = `<div class="field-section">
-    <div class="field-label"><span>${rLabel}</span><span class="last-val">last ${ex.last.r}</span></div>
-    <div class="field-row">
-      <div class="adj-chip" onclick="${rMinus}">−1</div>
-      <input class="field-input" type="number" value="${ex.reps}" id="r_${idx}" ${rReadonly}>
-      <span class="field-unit"></span>
-      <div class="adj-chip" onclick="${rPlus}">+1</div>
+  const rLabel = (isResting||isReady) ? 'Target' : 'Reps';
+
+  const fieldsGrid = `<div class="fields-grid">
+    <div class="field-col">
+      <div class="field-label"><span class="field-title">Weight</span><span class="field-unit">lb</span></div>
+      <div class="field-row">
+        <div class="adj-chip" onclick="adjW(${idx},-2.5)">−2.5</div>
+        <input class="field-input" type="number" value="${s.nextWeight}" id="w_${idx}" onchange="syncW(${idx})">
+        <div class="adj-chip" onclick="adjW(${idx},2.5)">+2.5</div>
+      </div>
+      <div class="last-refs">${wLastRefs}</div>
+    </div>
+    <div class="field-col">
+      <div class="field-label"><span class="field-title">${rLabel}</span></div>
+      <div class="field-row">
+        <div class="adj-chip" onclick="${rMinus}">−1</div>
+        <input class="field-input" type="number" value="${ex.reps}" id="r_${idx}" ${rReadonly}>
+        <div class="adj-chip" onclick="${rPlus}">+1</div>
+      </div>
+      <div class="last-refs">${rLastRefs}</div>
     </div>
   </div>`;
 
@@ -460,7 +495,7 @@ function buildSlide(ex, s, idx) {
   return `${ssBar}${chips}${info}${restBarHTML}
     <div class="${cardCls}">
       <div class="set-label"><span>Set ${s.currentSet} of ${s.total}</span>${tag}</div>
-      ${restCtrls}${weightSection}${repsSection}${btn}
+      ${restCtrls}${fieldsGrid}${repCalc}${btn}
       ${remaining>0?`<div class="remaining">${remaining} more after this</div>`:''}
     </div>${bottomActions}`;
 }
@@ -522,6 +557,8 @@ function syncW(idx) {
   if(el) { state[idx].nextWeight=parseFloat(el.value)||0; render(); }
 }
 function useLast(idx) { state[idx].nextWeight=exercises[idx].last.w; render(); }
+function applyW(idx, w) { state[idx].nextWeight=w; render(); }
+function applyR(idx, r) { exercises[idx].reps=r; render(); }
 function toggleRT(id) { repTableOpen[id]=!repTableOpen[id]; render(); }
 function adjReps(idx,d) { exercises[idx].reps=Math.max(1,exercises[idx].reps+d); render(); }
 function adjRepsInput(idx,d) { const el=document.getElementById(`r_${idx}`); if(el) el.value=Math.max(1,parseInt(el.value||0)+d); }
@@ -589,21 +626,28 @@ function buildSheetExRow(idx) {
   const expanded=sheetExpanded[idx];
   const chevron=expanded?'▲':'▼';
 
-  // Completed sets or placeholders
-  const totalPlanned = s.total;
-  let setChips = '';
-  for (let si=0; si<totalPlanned; si++) {
-    if (si < done) {
-      const c=s.completed[si];
-      setChips += `<div class="sheet-ex-set-chip">${c.weight}×${c.reps}</div>`;
-    } else {
-      setChips += `<div class="sheet-ex-set-chip empty">—</div>`;
-    }
+  // Build full-width set rows: completed (green) then planned (dim)
+  let setRows = '';
+  s.completed.forEach((c, si) => {
+    setRows += `<div class="sheet-ex-set-row done-row">
+      <span class="sheet-ex-set-icon">✓</span>
+      <span class="sheet-ex-set-num">Set ${si+1}</span>
+      <span class="sheet-ex-set-vals">${c.weight} lb &times; ${c.reps}</span>
+      <span class="sheet-ex-set-tag done-tag">done</span>
+    </div>`;
+  });
+  for (let si=done; si<s.total; si++) {
+    setRows += `<div class="sheet-ex-set-row planned-row">
+      <span class="sheet-ex-set-icon" style="color:#2a2a3a">·</span>
+      <span class="sheet-ex-set-num">Set ${si+1}</span>
+      <span class="sheet-ex-set-vals">${s.nextWeight} lb &times; ${ex.reps}</span>
+      <span class="sheet-ex-set-tag plan-tag">planned</span>
+    </div>`;
   }
 
   const detail = expanded ? `<div class="sheet-ex-detail open">
-    <div class="sheet-ex-detail-sets">${setChips}</div>
-    <div class="sheet-ex-nav">
+    <div class="sheet-ex-set-list">${setRows}</div>
+    <div class="sheet-ex-nav" style="padding:10px 16px 14px">
       <div class="sheet-ex-nav-btn" onclick="goToSlide(${idx});closeSheet()">Go to exercise →</div>
     </div>
   </div>` : `<div class="sheet-ex-detail"></div>`;
@@ -734,7 +778,9 @@ function finishDrag() {
   document.getElementById('swipeHint').classList.add('hidden');
 }
 
-document.getElementById('headerTap').addEventListener('click', openSheet);
+document.getElementById('headerTap').addEventListener('click', () => {
+  document.getElementById('sheet').classList.contains('open') ? closeSheet() : openSheet();
+});
 document.getElementById('sheetBackdrop').addEventListener('click', e=>{if(e.target.id==='sheetBackdrop')closeSheet();});
 document.getElementById('addBackdrop').addEventListener('click', e=>{if(e.target.id==='addBackdrop')closeAddSheet();});
 document.getElementById('restDoneBadge').addEventListener('click', ()=>{if(restOriginSlide!==null)goToSlide(restOriginSlide);});
