@@ -47,30 +47,37 @@
   .compact-set { background: #1a2e1a; color: #4ade80; font-size: 14px; padding: 6px 12px; border-radius: 8px; cursor: pointer; }
   .compact-set:active { background: #2a4e2a; }
 
-  /* Exercise history panel */
+  /* Exercise history panel — collapsed bar only (tappable to open sheet) */
   .history-panel { background: #0d0d14; border: 1px solid #1e1e2e; border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
   .history-collapsed { display: flex; align-items: center; gap: 8px; padding: 10px 12px; cursor: pointer; font-size: 14px; }
   .history-collapsed .muscle { color: #888; }
   .history-collapsed .trend { color: #4ade80; font-weight: 600; }
   .history-collapsed .trend.flat { color: #666; }
-  .history-collapsed .sessions { color: #555; font-size: 12px; margin-left: auto; }
-  .history-collapsed .chevron { color: #444; font-size: 11px; transition: transform 0.2s; margin-left: 4px; }
-  .history-collapsed .chevron.open { transform: rotate(180deg); }
-  .history-expanded { display: none; border-top: 1px solid #1a1a2e; padding: 8px 0 6px; }
-  .history-expanded.open { display: block; }
-  .history-row { display: flex; align-items: center; gap: 8px; padding: 5px 12px; }
-  .history-date { font-size: 12px; color: #555; min-width: 48px; flex-shrink: 0; }
-  .history-chips { display: flex; gap: 4px; flex-wrap: wrap; }
-  .history-chip { font-size: 11px; padding: 3px 7px; border-radius: 5px; background: rgba(255,255,255,0.04); border: 1px solid #222; color: #777; cursor: pointer; white-space: nowrap; }
-  .history-chip:active { opacity: 0.6; background: rgba(59,130,246,0.1); }
-  .history-trend-line { font-size: 11px; padding: 4px 12px 2px; }
-  .history-trend-line.up { color: #4ade80; }
-  .history-trend-line.flat { color: #666; }
-  .history-trend-line.down { color: #f87171; }
+  .history-collapsed .sessions { color: #555; font-size: 12px; }
+  .history-collapsed .rest-info { color: #555; font-size: 12px; }
+  .history-collapsed .chevron { color: #444; font-size: 11px; margin-left: auto; }
 
-  /* Coach note */
-  .coach-note { display: flex; align-items: flex-start; gap: 6px; background: rgba(59,130,246,0.06); border: 1px solid rgba(59,130,246,0.12); border-radius: 8px; padding: 8px 10px; margin-bottom: 10px; font-size: 12px; color: #8ab4f8; line-height: 1.4; }
-  .coach-note-icon { flex-shrink: 0; font-size: 13px; margin-top: 1px; }
+  /* History full-screen sheet */
+  .history-sheet-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+  .history-sheet-backdrop.open { opacity: 1; pointer-events: auto; }
+  .history-sheet { position: fixed; bottom: 0; left: 0; right: 0; top: 0; background: #0a0a0a; z-index: 301; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.25,0.1,0.25,1); display: flex; flex-direction: column; }
+  .history-sheet.open { transform: translateY(0); }
+  .history-sheet-handle { width: 36px; height: 4px; background: #444; border-radius: 2px; margin: 10px auto 6px; }
+  .history-sheet-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px 8px; }
+  .history-sheet-title { font-size: 18px; font-weight: 700; }
+  .history-sheet-close { font-size: 15px; color: #888; cursor: pointer; padding: 8px 12px; border-radius: 8px; background: #1a1a1a; }
+  .history-sheet-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 16px 24px; }
+  .history-sheet .coach-note { display: flex; align-items: flex-start; gap: 6px; background: rgba(59,130,246,0.06); border: 1px solid rgba(59,130,246,0.12); border-radius: 8px; padding: 10px 12px; margin-bottom: 14px; font-size: 13px; color: #8ab4f8; line-height: 1.4; }
+  .history-sheet .coach-note-icon { flex-shrink: 0; font-size: 14px; margin-top: 1px; }
+  .history-sheet-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #1a1a1a; }
+  .history-sheet-date { font-size: 13px; color: #555; min-width: 56px; flex-shrink: 0; }
+  .history-sheet-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .history-sheet-chip { font-size: 13px; padding: 6px 12px; border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid #222; color: #999; cursor: pointer; white-space: nowrap; }
+  .history-sheet-chip:active { opacity: 0.6; background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.3); }
+  .history-sheet-trend { font-size: 13px; padding: 14px 0 4px; }
+  .history-sheet-trend.up { color: #4ade80; }
+  .history-sheet-trend.flat { color: #666; }
+  .history-sheet-trend.down { color: #f87171; }
 
   .info-bar { display: flex; gap: 10px; font-size: 14px; color: #888; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #1a1a1a; flex-wrap: wrap; }
 
@@ -84,28 +91,28 @@
   .tag-ready { background: rgba(34,197,94,0.15); color: #22c55e; }
   .tag-superset { background: rgba(124,58,237,0.15); color: #a78bfa; }
 
-  /* Two-column field grid: weight left, reps right -- same structure */
-  .fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; overflow: hidden; }
+  /* Single-column stacked field layout: weight on top, reps below, full width */
+  .fields-stack { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
   .field-col { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
-  .field-label { font-size: 13px; color: #666; display: flex; justify-content: space-between; align-items: baseline; }
-  .field-label .field-title { font-size: 14px; color: #888; }
-  .field-row { display: flex; align-items: center; gap: 3px; }
-  .field-input { flex: 1; background: #0a0a14; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 20px; font-weight: 600; padding: 10px 4px; text-align: center; font-variant-numeric: tabular-nums; min-width: 0; }
+  .field-label { font-size: 15px; color: #666; display: flex; justify-content: space-between; align-items: baseline; }
+  .field-label .field-title { font-size: 15px; color: #888; }
+  .field-row { display: flex; align-items: center; gap: 4px; }
+  .field-input { flex: 1; background: #0a0a14; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 28px; font-weight: 600; padding: 12px 4px; text-align: center; font-variant-numeric: tabular-nums; min-width: 0; }
   .field-input:focus { border-color: #3b82f6; outline: none; }
-  .field-unit { font-size: 13px; color: #555; }
-  .adj-chip { background: #1a1a2e; border: 1px solid #2a2a40; color: #8888cc; font-size: 13px; font-weight: 500; padding: 8px 7px; border-radius: 8px; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+  .field-unit { font-size: 15px; color: #555; }
+  .adj-chip { background: #1a1a2e; border: 1px solid #2a2a40; color: #8888cc; font-size: 16px; font-weight: 500; padding: 10px 14px; border-radius: 8px; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
   .adj-chip:active { animation: chipFlash 0.15s; }
   /* Tappable last-value pills -- tap to apply */
   .last-refs { display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
-  .last-ref { font-size: 12px; padding: 3px 8px; border-radius: 6px; cursor: pointer; border: 1px solid transparent; }
+  .last-ref { font-size: 13px; padding: 3px 8px; border-radius: 6px; cursor: pointer; border: 1px solid transparent; }
   .last-ref.session { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); color: #93c5fd; }
   .last-ref.history { background: rgba(255,255,255,0.04); border-color: #2a2a2a; color: #666; }
   .last-ref:active { opacity: 0.7; }
 
   /* RPE selector */
   .rpe-row { display: flex; gap: 5px; margin-top: 6px; margin-bottom: 4px; }
-  .rpe-label { font-size: 12px; color: #555; margin-bottom: 3px; }
-  .rpe-chip { font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 6px; cursor: pointer; background: #1a1a2e; border: 1px solid #2a2a40; color: #666; transition: all 0.15s; }
+  .rpe-label { font-size: 13px; color: #555; margin-bottom: 3px; }
+  .rpe-chip { font-size: 15px; font-weight: 600; padding: 8px 14px; border-radius: 6px; cursor: pointer; background: #1a1a2e; border: 1px solid #2a2a40; color: #666; transition: all 0.15s; }
   .rpe-chip:active { transform: scale(0.93); }
   .rpe-chip.selected { border-color: currentColor; }
   .rpe-chip.rpe-6, .rpe-chip.rpe-7 { }
@@ -341,7 +348,7 @@
   </div>
   <div class="header-right">
     <div class="superset-badge" id="supersetBadge"></div>
-    <div class="rest-done-badge" id="restDoneBadge">Rest done ✓</div>
+    <div class="rest-done-badge" id="restDoneBadge">Rest done &#10003;</div>
     <div class="session-timer" id="sessionTimer">0:00</div>
     <div class="hr-badge" id="hrBadge">142</div>
     <div class="header-timer hidden" id="headerTimer"></div>
@@ -383,11 +390,11 @@
 <div class="end-sheet" id="endSheet">
   <div class="end-header">
     <div class="end-title">Session Complete</div>
-    <div class="end-back" onclick="closeEndSession()">← Back</div>
+    <div class="end-back" onclick="closeEndSession()">&larr; Back</div>
   </div>
   <div class="end-stats" id="endStats"></div>
   <div class="end-list" id="endList"></div>
-  <button class="end-save" onclick="saveAndFinish()">Save & Finish</button>
+  <button class="end-save" onclick="saveAndFinish()">Save &amp; Finish</button>
 </div>
 
 <!-- EDIT MODAL -->
@@ -402,6 +409,18 @@
       <button class="modal-btn cancel" onclick="closeEditModal()">Cancel</button>
       <button class="modal-btn save" onclick="saveEdit()">Save</button>
     </div>
+  </div>
+</div>
+
+<!-- HISTORY SHEET (full-screen bottom sheet) -->
+<div class="history-sheet-backdrop" id="historySheetBackdrop">
+  <div class="history-sheet" id="historySheet">
+    <div class="history-sheet-handle"></div>
+    <div class="history-sheet-header">
+      <div class="history-sheet-title" id="historySheetTitle"></div>
+      <div class="history-sheet-close" onclick="closeHistorySheet()">&times;</div>
+    </div>
+    <div class="history-sheet-body" id="historySheetBody"></div>
   </div>
 </div>
 
@@ -433,7 +452,7 @@ let exercises = [
       { date:'Mar 7',  sets:[{w:35,r:10},{w:35,r:10},{w:35,r:9}] },
     ]},
   { name:'Incline DB Press', muscle:'Upper Chest', last:{w:65,r:8}, planned:3, reps:8, weight:65, rest:75, ss:null,
-    coachNote:'30° incline. Touch outer chest, full lockout.',
+    coachNote:'30\u00b0 incline. Touch outer chest, full lockout.',
     history: [
       { date:'Mar 19', sets:[{w:65,r:8},{w:65,r:8},{w:65,r:7}] },
       { date:'Mar 16', sets:[{w:65,r:8},{w:65,r:7},{w:60,r:8}] },
@@ -465,8 +484,8 @@ let dragStartX=0, dragDelta=0, isDragging=false;
 let repTableOpen = {};
 let sheetExpanded = {}; // which exercises are expanded in sheet
 let supersetPendingRest = null;
-let historyExpanded = {}; // which exercises have expanded history panel
 let swapMode = false; // true when add-sheet is in swap mode
+let historySheetIdx = -1; // which exercise history sheet is open for
 
 // Session timer
 let sessionStartTime = Date.now();
@@ -507,27 +526,26 @@ function partner(idx) {
 
 // History helpers
 function getHistoryTrend(ex) {
-  if (!ex.history || ex.history.length < 2) return { arrow: '→', delta: 0, direction: 'flat' };
+  if (!ex.history || ex.history.length < 2) return { arrow: '\u2192', delta: 0, direction: 'flat' };
   const newest = Math.max(...ex.history[0].sets.map(s => s.w));
   const oldest = Math.max(...ex.history[ex.history.length - 1].sets.map(s => s.w));
   const delta = newest - oldest;
-  if (delta > 0) return { arrow: '↗', delta, direction: 'up' };
-  if (delta < 0) return { arrow: '↘', delta, direction: 'down' };
-  return { arrow: '→', delta: 0, direction: 'flat' };
+  if (delta > 0) return { arrow: '\u2197', delta, direction: 'up' };
+  if (delta < 0) return { arrow: '\u2198', delta, direction: 'down' };
+  return { arrow: '\u2192', delta: 0, direction: 'flat' };
 }
 
 function buildHistoryPanel(ex, idx) {
   if (!ex.history || !ex.history.length) {
     return `<div class="info-bar">
       <span>${ex.muscle}</span>
-      <span>Last: ${ex.last.w} lb × ${ex.last.r}</span>
+      <span>Last: ${ex.last.w} lb \u00d7 ${ex.last.r}</span>
       <span>${ex.rest}s rest</span>
     </div>`;
   }
 
   const trend = getHistoryTrend(ex);
   const bestWeight = Math.max(...ex.history[0].sets.map(s => s.w));
-  const expanded = historyExpanded[idx];
   const numSessions = ex.history.length;
 
   let trendText, trendCls;
@@ -542,49 +560,72 @@ function buildHistoryPanel(ex, idx) {
     trendCls = ' flat';
   }
 
-  let expandedHTML = '';
-  if (expanded) {
-    let rows = ex.history.map(h => {
-      const chips = h.sets.map(s =>
-        `<span class="history-chip" onclick="applyHistorySet(${idx},${s.w},${s.r})">${s.w}×${s.r}</span>`
-      ).join('');
-      return `<div class="history-row"><span class="history-date">${h.date}</span><div class="history-chips">${chips}</div></div>`;
-    }).join('');
-
-    let trendLine = '';
-    if (trend.direction === 'up') {
-      trendLine = `<div class="history-trend-line up">↗ +${trend.delta} lb over ${numSessions} sessions</div>`;
-    } else if (trend.direction === 'down') {
-      trendLine = `<div class="history-trend-line down">↘ ${trend.delta} lb over ${numSessions} sessions</div>`;
-    } else {
-      trendLine = `<div class="history-trend-line flat">→ flat over ${numSessions} sessions</div>`;
-    }
-
-    expandedHTML = `<div class="history-expanded open">${rows}${trendLine}</div>`;
-  } else {
-    expandedHTML = `<div class="history-expanded"></div>`;
-  }
-
   return `<div class="history-panel">
-    <div class="history-collapsed" onclick="toggleHistory(${idx})">
+    <div class="history-collapsed" onclick="openHistorySheet(${idx})">
       <span class="muscle">${ex.muscle}</span>
-      <span style="color:#444">·</span>
+      <span style="color:#444">\u00b7</span>
       <span class="trend${trendCls}">${trendText}</span>
+      <span style="color:#444">\u00b7</span>
       <span class="sessions">${numSessions} sessions</span>
-      <span class="chevron${expanded ? ' open' : ''}">▼</span>
+      <span style="color:#444">\u00b7</span>
+      <span class="rest-info">${ex.rest}s rest</span>
+      <span class="chevron">\u25b8</span>
     </div>
-    ${expandedHTML}
   </div>`;
 }
 
-function toggleHistory(idx) {
-  historyExpanded[idx] = !historyExpanded[idx];
-  render();
+// History sheet (full-screen)
+function openHistorySheet(idx) {
+  historySheetIdx = idx;
+  const ex = exercises[idx];
+  document.getElementById('historySheetTitle').textContent = ex.name;
+
+  let bodyHTML = '';
+
+  // Coach note at top of sheet
+  if (ex.coachNote) {
+    bodyHTML += `<div class="coach-note"><span class="coach-note-icon">\ud83d\udca1</span><span>${ex.coachNote}</span></div>`;
+  }
+
+  if (ex.history && ex.history.length) {
+    const trend = getHistoryTrend(ex);
+    const numSessions = ex.history.length;
+
+    // History rows
+    ex.history.forEach(h => {
+      const chips = h.sets.map(s =>
+        `<span class="history-sheet-chip" onclick="applyHistorySetFromSheet(${idx},${s.w},${s.r})">${s.w}\u00d7${s.r}</span>`
+      ).join('');
+      bodyHTML += `<div class="history-sheet-row"><span class="history-sheet-date">${h.date}</span><div class="history-sheet-chips">${chips}</div></div>`;
+    });
+
+    // Trend line
+    if (trend.direction === 'up') {
+      bodyHTML += `<div class="history-sheet-trend up">\u2197 +${trend.delta} lb over ${numSessions} sessions</div>`;
+    } else if (trend.direction === 'down') {
+      bodyHTML += `<div class="history-sheet-trend down">\u2198 ${trend.delta} lb over ${numSessions} sessions</div>`;
+    } else {
+      bodyHTML += `<div class="history-sheet-trend flat">\u2192 flat over ${numSessions} sessions</div>`;
+    }
+  } else {
+    bodyHTML += `<div style="color:#555;font-size:14px;padding:20px 0;text-align:center;">No history yet</div>`;
+  }
+
+  document.getElementById('historySheetBody').innerHTML = bodyHTML;
+  document.getElementById('historySheetBackdrop').classList.add('open');
+  document.getElementById('historySheet').classList.add('open');
 }
 
-function applyHistorySet(idx, w, r) {
+function closeHistorySheet() {
+  document.getElementById('historySheetBackdrop').classList.remove('open');
+  document.getElementById('historySheet').classList.remove('open');
+  historySheetIdx = -1;
+}
+
+function applyHistorySetFromSheet(idx, w, r) {
   state[idx].nextWeight = w;
   exercises[idx].reps = r;
+  closeHistorySheet();
   render();
 }
 
@@ -650,7 +691,7 @@ function buildSlide(ex, s, idx) {
   // Completed chips (show RPE if set)
   let chips = s.completed.length ? '<div class="compact-sets">' +
     s.completed.map((c,si)=>{
-      let label = `S${si+1}: ${c.weight}×${c.reps}`;
+      let label = `S${si+1}: ${c.weight}\u00d7${c.reps}`;
       if (c.rpe) label += ` @${c.rpe}`;
       return `<div class="compact-set" onclick="openEditModal(${idx},${si})">${label}</div>`;
     }).join('') +
@@ -658,7 +699,7 @@ function buildSlide(ex, s, idx) {
 
   if (s.currentSet > s.total || s.skipped) {
     const doneMsg = s.skipped ? 'Exercise Skipped' : 'All Sets Complete';
-    const doneIcon = s.skipped ? '⏭' : '🎉';
+    const doneIcon = s.skipped ? '\u23ed' : '\ud83c\udf89';
     return `${chips}<div class="done-view"><div style="font-size:40px">${doneIcon}</div><div class="done-text">${doneMsg}</div><div class="done-sub">Swipe to next exercise</div></div>`;
   }
 
@@ -672,17 +713,12 @@ function buildSlide(ex, s, idx) {
     ssBar = `<div class="superset-header">
       <div class="superset-pip"></div>
       <span>Superset ${ex.ss} with <strong style="color:#c4b5fd">${partnerEx.name}</strong></span>
-      ${pDone ? '<span style="color:#4ade80;margin-left:auto;font-size:12px">✓ done</span>' : ''}
+      ${pDone ? '<span style="color:#4ade80;margin-left:auto;font-size:12px">\u2713 done</span>' : ''}
     </div>`;
   }
 
-  // History panel replaces old info-bar
+  // History panel (collapsed bar only — tapping opens sheet)
   const histPanel = buildHistoryPanel(ex, idx);
-
-  // Coach note
-  const coachNoteHTML = ex.coachNote
-    ? `<div class="coach-note"><span class="coach-note-icon">💡</span><span>${ex.coachNote}</span></div>`
-    : '';
 
   // Rest bar (outside card so timer tick can update without rebuild)
   let restBarHTML = '';
@@ -700,7 +736,7 @@ function buildSlide(ex, s, idx) {
 
   let restCtrls = isResting ? `<div class="rest-controls">
     <div class="rest-ctrl skip" onclick="skipRest(${idx})">Skip</div>
-    <div class="rest-ctrl" onclick="extendRest(${idx},-30)">−30s</div>
+    <div class="rest-ctrl" onclick="extendRest(${idx},-30)">\u221230s</div>
     <div class="rest-ctrl" onclick="extendRest(${idx},30)">+30s</div>
   </div>` : '';
 
@@ -718,14 +754,14 @@ function buildSlide(ex, s, idx) {
     .sort((a,b)=>a.reps-b.reps)
     .map(({w,reps,cur,orig})=>{
       const cls=cur?'current-row':orig?'origin-row':'';
-      const mk=cur?'←':orig?'last':'';
+      const mk=cur?'\u2190':orig?'last':'';
       return `<tr class="${cls}"><td>${w} lb</td><td>${reps}</td><td>${mk}</td></tr>`;
     }).join('');
 
   const repCalc = `
     <div class="rep-calc" onclick="toggleRT('${tableId}')">
       <span><span style="color:#777">e1RM:</span> <span class="est-val">${Math.round(oneRM)} lb</span></span>
-      <span style="color:#555;font-size:13px">Equiv ▾</span>
+      <span style="color:#555;font-size:13px">Equiv \u25be</span>
     </div>
     <div class="rep-table" id="${tableId}" style="display:${repTableOpen[tableId]?'block':'none'}">
       <table><tr><th>Weight</th><th>Reps</th><th></th></tr>${rows}</table>
@@ -761,11 +797,11 @@ function buildSlide(ex, s, idx) {
   }).join('');
   const rpeRow = `<div style="margin-top:8px"><div class="rpe-label">RPE (optional)</div><div class="rpe-row">${rpeChips}</div></div>`;
 
-  const fieldsGrid = `<div class="fields-grid">
+  const fieldsStack = `<div class="fields-stack">
     <div class="field-col">
-      <div class="field-label"><span class="field-title">Weight</span><span class="field-unit">lb</span></div>
+      <div class="field-label"><span class="field-title">Weight <span style="font-size:13px;color:#555;font-weight:400">lb</span></span></div>
       <div class="field-row">
-        <div class="adj-chip" onclick="adjW(${idx},-2.5)">−2.5</div>
+        <div class="adj-chip" onclick="adjW(${idx},-2.5)">\u22122.5</div>
         <input class="field-input" type="number" value="${s.nextWeight}" id="w_${idx}" onchange="syncW(${idx})">
         <div class="adj-chip" onclick="adjW(${idx},2.5)">+2.5</div>
       </div>
@@ -774,7 +810,7 @@ function buildSlide(ex, s, idx) {
     <div class="field-col">
       <div class="field-label"><span class="field-title">${rLabel}</span></div>
       <div class="field-row">
-        <div class="adj-chip" onclick="${rMinus}">−1</div>
+        <div class="adj-chip" onclick="${rMinus}">\u22121</div>
         <input class="field-input" type="number" value="${ex.reps}" id="r_${idx}" ${rReadonly}>
         <div class="adj-chip" onclick="${rPlus}">+1</div>
       </div>
@@ -788,7 +824,7 @@ function buildSlide(ex, s, idx) {
   } else if (isReady) {
     btn = `<button class="confirm-btn ready-btn" onclick="dismissReady(${idx})">Start Set ${s.currentSet}</button>`;
   } else if (inSS && partnerS && partnerS.phase!=='resting' && partnerS.currentSet<=partnerS.total) {
-    btn = `<button class="confirm-btn superset-btn" onclick="confirmSet(${idx})">Log → ${partnerEx.name.split(' ')[0]}</button>`;
+    btn = `<button class="confirm-btn superset-btn" onclick="confirmSet(${idx})">Log \u2192 ${partnerEx.name.split(' ')[0]}</button>`;
   } else {
     btn = `<button class="confirm-btn" onclick="confirmSet(${idx})">Log Set ${s.currentSet}</button>`;
   }
@@ -805,10 +841,10 @@ function buildSlide(ex, s, idx) {
     <div class="action-btn" onclick="swapExercise(${idx})">Swap</div>
   </div>${noteInput}` : '';
 
-  return `${ssBar}${chips}${coachNoteHTML}${histPanel}${restBarHTML}
+  return `${ssBar}${chips}${histPanel}${restBarHTML}
     <div class="${cardCls}">
       <div class="set-label"><span>Set ${s.currentSet} of ${s.total}</span>${tag}</div>
-      ${restCtrls}${fieldsGrid}${rpeRow}${repCalc}${btn}
+      ${restCtrls}${fieldsStack}${rpeRow}${repCalc}${btn}
       ${remaining>0?`<div class="remaining">${remaining} more after this</div>`:''}
     </div>${bottomActions}`;
 }
@@ -936,7 +972,7 @@ function updateHeader() {
   const ex=exercises[currentSlide], s=state[currentSlide];
   document.getElementById('headerExercise').textContent = ex.name;
   const sd=Math.min(s.currentSet,s.total);
-  document.getElementById('headerProgress').textContent = `Set ${sd} of ${s.total} · ${currentSlide+1}/${exercises.length}`;
+  document.getElementById('headerProgress').textContent = `Set ${sd} of ${s.total} \u00b7 ${currentSlide+1}/${exercises.length}`;
 
   const timer=document.getElementById('headerTimer');
   const badge=document.getElementById('restDoneBadge');
@@ -958,7 +994,7 @@ function updateHeader() {
 
   const inSS = exercises[currentSlide].ss !== null;
   ssBadge.className = inSS ? 'superset-badge visible' : 'superset-badge';
-  if (inSS) ssBadge.textContent = `⚡ SS-${exercises[currentSlide].ss}`;
+  if (inSS) ssBadge.textContent = `\u26a1 SS-${exercises[currentSlide].ss}`;
 }
 
 // -- SESSION SHEET --
@@ -973,7 +1009,7 @@ function updateSheet() {
 
     if (p !== -1 && !rendered.has(p)) {
       // Superset group
-      html += `<div class="sheet-ss-label">⚡ Superset ${ex.ss}</div>`;
+      html += `<div class="sheet-ss-label">\u26a1 Superset ${ex.ss}</div>`;
       [i, p].forEach(idx => {
         html += buildSheetExRow(idx);
         rendered.add(idx);
@@ -994,14 +1030,14 @@ function buildSheetExRow(idx) {
   const isSkipped=s.skipped;
   const isCurrent=idx===currentSlide;
   const expanded=sheetExpanded[idx];
-  const chevron=expanded?'▲':'▼';
+  const chevron=expanded?'\u25b2':'\u25bc';
 
   // Build full-width set rows: completed (green), skipped (dim strikethrough), then planned (dim)
   let setRows = '';
   s.completed.forEach((c, si) => {
     if (c.skipped) {
       setRows += `<div class="sheet-ex-set-row skipped-row">
-        <span class="sheet-ex-set-icon" style="color:#555">⏭</span>
+        <span class="sheet-ex-set-icon" style="color:#555">\u23ed</span>
         <span class="sheet-ex-set-num">Set ${si+1}</span>
         <span class="sheet-ex-set-vals">skipped</span>
         <span class="sheet-ex-set-tag skipped-tag">skip</span>
@@ -1009,31 +1045,31 @@ function buildSheetExRow(idx) {
     } else {
       let rpeLabel = c.rpe ? ` <span style="font-size:12px;color:#888">@${c.rpe}</span>` : '';
       setRows += `<div class="sheet-ex-set-row done-row">
-        <span class="sheet-ex-set-icon">✓</span>
+        <span class="sheet-ex-set-icon">\u2713</span>
         <span class="sheet-ex-set-num">Set ${si+1}</span>
-        <span class="sheet-ex-set-vals">${c.weight} lb × ${c.reps}${rpeLabel}</span>
+        <span class="sheet-ex-set-vals">${c.weight} lb \u00d7 ${c.reps}${rpeLabel}</span>
         <span class="sheet-ex-set-tag done-tag">done</span>
       </div>`;
     }
   });
   for (let si=s.completed.length; si<s.total; si++) {
     setRows += `<div class="sheet-ex-set-row planned-row">
-      <span class="sheet-ex-set-icon" style="color:#444">·</span>
+      <span class="sheet-ex-set-icon" style="color:#444">\u00b7</span>
       <span class="sheet-ex-set-num">Set ${si+1}</span>
-      <span class="sheet-ex-set-vals">${s.nextWeight} lb × ${ex.reps}</span>
+      <span class="sheet-ex-set-vals">${s.nextWeight} lb \u00d7 ${ex.reps}</span>
     </div>`;
   }
 
   const detail = expanded ? `<div class="sheet-ex-detail open">
     <div class="sheet-ex-set-list">${setRows}</div>
     <div class="sheet-ex-nav" style="padding:10px 16px 14px">
-      <div class="sheet-ex-nav-btn" onclick="goToSlide(${idx});closeSheet()">Go to exercise →</div>
+      <div class="sheet-ex-nav-btn" onclick="goToSlide(${idx});closeSheet()">Go to exercise \u2192</div>
     </div>
   </div>` : `<div class="sheet-ex-detail"></div>`;
 
   const nameCls = isSkipped ? 'sheet-ex-name skipped-ex' : 'sheet-ex-name';
-  const statusBadge = allDone ? '<span class="sheet-ex-check">✓</span>' :
-                      isSkipped ? '<span class="sheet-ex-skip-badge">⏭</span>' : '';
+  const statusBadge = allDone ? '<span class="sheet-ex-check">\u2713</span>' :
+                      isSkipped ? '<span class="sheet-ex-skip-badge">\u23ed</span>' : '';
 
   return `<div class="sheet-ex">
     <div class="sheet-ex-row${isCurrent?' current':''}" onclick="toggleSheetEx(${idx})">
@@ -1086,7 +1122,7 @@ function closeAddSheet() {
 function filterEx() {
   const q=document.getElementById('addSearch').value.toLowerCase();
   const list=exLibrary.filter(e=>!q||e.name.toLowerCase().includes(q)||e.muscle.toLowerCase().includes(q));
-  const btnLabel = swapMode !== false ? '↔ Swap' : '+ Add';
+  const btnLabel = swapMode !== false ? '\u21c4 Swap' : '+ Add';
   document.getElementById('addResults').innerHTML=list.map(e=>
     `<div class="add-item" onclick="selectExercise('${e.name}','${e.muscle}')">
       <div><div class="add-item-name">${e.name}</div><div class="add-item-muscle">${e.muscle}</div></div>
@@ -1151,7 +1187,7 @@ function openEndSession() {
     } else {
       chips = s.completed.map((c,si)=>{
         if (c.skipped) return `<div class="end-set-chip skipped-chip">S${si+1}: skip</div>`;
-        let label = `S${si+1}: ${c.weight}×${c.reps}`;
+        let label = `S${si+1}: ${c.weight}\u00d7${c.reps}`;
         if (c.rpe) label += ` @${c.rpe}`;
         return `<div class="end-set-chip">${label}</div>`;
       }).join('');
@@ -1226,6 +1262,7 @@ document.getElementById('headerTap').addEventListener('click', () => {
 });
 document.getElementById('sheetBackdrop').addEventListener('click', e=>{if(e.target.id==='sheetBackdrop')closeSheet();});
 document.getElementById('addBackdrop').addEventListener('click', e=>{if(e.target.id==='addBackdrop')closeAddSheet();});
+document.getElementById('historySheetBackdrop').addEventListener('click', e=>{if(e.target.id==='historySheetBackdrop')closeHistorySheet();});
 document.getElementById('restDoneBadge').addEventListener('click', ()=>{if(restOriginSlide!==null)goToSlide(restOriginSlide);});
 
 render();
@@ -1307,7 +1344,7 @@ function resumeCardio() {
 function stopCardio() {
   cardioRunning = false; cardioPaused = false; cardioSecs = 0;
   clearInterval(cardioInterval);
-  document.getElementById('cardioHrNum').textContent = '—';
+  document.getElementById('cardioHrNum').textContent = '\u2014';
   document.getElementById('cardioHrNum').className = 'cardio-hr-num no-signal';
   document.getElementById('cardioDuration').textContent = '00:00';
   document.getElementById('cardioCal').textContent = '0';
@@ -1340,37 +1377,37 @@ function toggleSetting(key) {
   </div>
   <div class="screen-body">
     <div class="home-greeting">Good morning, Pete</div>
-    <div class="home-sub">Friday · March 20</div>
+    <div class="home-sub">Friday &middot; March 20</div>
     <button class="home-start-btn" onclick="startSessionFromHome()">Start Workout</button>
 
     <div class="home-section">Last Session</div>
     <div class="home-last">
-      <div class="home-last-label">Yesterday · 58m</div>
-      <div class="home-last-name">Push A — Chest + Triceps</div>
-      <div class="home-last-stats">16 sets · 12,340 lb volume</div>
+      <div class="home-last-label">Yesterday &middot; 58m</div>
+      <div class="home-last-name">Push A &mdash; Chest + Triceps</div>
+      <div class="home-last-stats">16 sets &middot; 12,340 lb volume</div>
     </div>
 
     <div class="home-section">Templates</div>
     <div class="home-template" onclick="startSessionFromHome()">
       <div>
-        <div class="home-template-name">Push A — Chest + Triceps</div>
-        <div class="home-template-meta">5 exercises · ~55 min</div>
+        <div class="home-template-name">Push A &mdash; Chest + Triceps</div>
+        <div class="home-template-meta">5 exercises &middot; ~55 min</div>
       </div>
-      <div class="home-template-arrow">›</div>
+      <div class="home-template-arrow">&rsaquo;</div>
     </div>
     <div class="home-template" onclick="startSessionFromHome()">
       <div>
-        <div class="home-template-name">Pull — Back + Biceps</div>
-        <div class="home-template-meta">6 exercises · ~60 min</div>
+        <div class="home-template-name">Pull &mdash; Back + Biceps</div>
+        <div class="home-template-meta">6 exercises &middot; ~60 min</div>
       </div>
-      <div class="home-template-arrow">›</div>
+      <div class="home-template-arrow">&rsaquo;</div>
     </div>
     <div class="home-template" onclick="startSessionFromHome()">
       <div>
         <div class="home-template-name">Legs</div>
-        <div class="home-template-meta">5 exercises · ~70 min</div>
+        <div class="home-template-meta">5 exercises &middot; ~70 min</div>
       </div>
-      <div class="home-template-arrow">›</div>
+      <div class="home-template-arrow">&rsaquo;</div>
     </div>
   </div>
 </div>
@@ -1393,7 +1430,7 @@ function toggleSetting(key) {
 
     <!-- Big HR display -->
     <div class="cardio-hr-hero">
-      <div class="cardio-hr-num no-signal" id="cardioHrNum">—</div>
+      <div class="cardio-hr-num no-signal" id="cardioHrNum">&mdash;</div>
       <div class="cardio-hr-unit">BPM</div>
       <div class="cardio-zone" id="cardioZone"></div>
     </div>
@@ -1427,29 +1464,29 @@ function toggleSetting(key) {
     <div class="settings-section">Device Integrations</div>
     <div class="settings-row">
       <div class="settings-item">
-        <div class="settings-icon" style="background:#1a1028">❤️</div>
+        <div class="settings-icon" style="background:#1a1028">&#10084;&#65039;</div>
         <div class="settings-label">
           <div class="settings-name">Polar H10</div>
           <div class="settings-desc">B5:A2:3C:11:88:FD</div>
         </div>
         <span class="settings-status status-connected">Connected</span>
-        <span class="settings-chevron">›</span>
+        <span class="settings-chevron">&rsaquo;</span>
       </div>
       <div class="settings-item">
-        <div class="settings-icon" style="background:#0a1a2e">⌚</div>
+        <div class="settings-icon" style="background:#0a1a2e">&#8986;</div>
         <div class="settings-label">
           <div class="settings-name">Apple Watch</div>
           <div class="settings-desc">Not paired</div>
         </div>
         <span class="settings-status status-off">Off</span>
-        <span class="settings-chevron">›</span>
+        <span class="settings-chevron">&rsaquo;</span>
       </div>
     </div>
 
     <div class="settings-section">App Integrations</div>
     <div class="settings-row">
       <div class="settings-item">
-        <div class="settings-icon" style="background:#1a0a0e">❤️‍🔥</div>
+        <div class="settings-icon" style="background:#1a0a0e">&#10084;&#65039;&#8205;&#128293;</div>
         <div class="settings-label">
           <div class="settings-name">Apple Health</div>
           <div class="settings-desc">Sync workouts + HR</div>
@@ -1457,7 +1494,7 @@ function toggleSetting(key) {
         <div class="settings-toggle" id="toggle-appleHealth" onclick="toggleSetting('appleHealth')"></div>
       </div>
       <div class="settings-item">
-        <div class="settings-icon" style="background:#150a00">🏃</div>
+        <div class="settings-icon" style="background:#150a00">&#127939;</div>
         <div class="settings-label">
           <div class="settings-name">Strava</div>
           <div class="settings-desc">Tap to connect</div>
@@ -1465,7 +1502,7 @@ function toggleSetting(key) {
         <div class="settings-toggle off" id="toggle-strava" onclick="toggleSetting('strava')"></div>
       </div>
       <div class="settings-item">
-        <div class="settings-icon" style="background:#001a10">📡</div>
+        <div class="settings-icon" style="background:#001a10">&#128225;</div>
         <div class="settings-label">
           <div class="settings-name">Garmin Connect</div>
           <div class="settings-desc">Tap to connect</div>
@@ -1477,21 +1514,21 @@ function toggleSetting(key) {
     <div class="settings-section">Data</div>
     <div class="settings-row">
       <div class="settings-item">
-        <div class="settings-icon" style="background:#0a1a0a">📊</div>
+        <div class="settings-icon" style="background:#0a1a0a">&#128202;</div>
         <div class="settings-label">
           <div class="settings-name">HDP Data Pipeline</div>
           <div class="settings-desc">Last sync 14m ago</div>
         </div>
         <span class="settings-status status-connected">Active</span>
-        <span class="settings-chevron">›</span>
+        <span class="settings-chevron">&rsaquo;</span>
       </div>
       <div class="settings-item">
-        <div class="settings-icon" style="background:#1a1a0a">📤</div>
+        <div class="settings-icon" style="background:#1a1a0a">&#128228;</div>
         <div class="settings-label">
           <div class="settings-name">Export Data</div>
           <div class="settings-desc">CSV / JSON</div>
         </div>
-        <span class="settings-chevron">›</span>
+        <span class="settings-chevron">&rsaquo;</span>
       </div>
     </div>
 
