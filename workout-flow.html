@@ -11,13 +11,13 @@
   .header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: #1a1a1a; border-bottom: 1px solid #333; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; }
   .header-left { display: flex; flex-direction: column; gap: 1px; flex: 1; cursor: pointer; }
   .header-exercise { font-size: 16px; font-weight: 600; color: #fff; }
-  .header-progress { font-size: 11px; color: #888; }
+  .header-progress { font-size: 12px; color: #aaa; }
   .header-right { display: flex; align-items: center; gap: 8px; }
   .header-timer { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; min-width: 44px; text-align: right; padding: 4px 8px; border-radius: 8px; }
   .header-timer.resting { color: #f59e0b; background: rgba(245,158,11,0.1); }
   .header-timer.ready { color: #22c55e; background: rgba(34,197,94,0.1); animation: pulse 1s infinite; }
   .header-timer.hidden { display: none; }
-  .session-timer { font-size: 13px; font-variant-numeric: tabular-nums; color: #555; padding: 2px 6px; }
+  .session-timer { font-size: 14px; font-variant-numeric: tabular-nums; color: #888; padding: 2px 6px; }
   .hr-badge { background: #ef4444; color: #fff; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 10px; display: flex; align-items: center; gap: 4px; }
   .hr-badge::before { content: ''; width: 5px; height: 5px; background: #fff; border-radius: 50%; animation: pulse 1s infinite; }
   .rest-done-badge { background: #22c55e; color: #000; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 10px; cursor: pointer; animation: pulse 1.5s infinite; display: none; }
@@ -44,18 +44,18 @@
   .superset-pip { width: 8px; height: 8px; background: #7c3aed; border-radius: 50%; flex-shrink: 0; }
 
   .compact-sets { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-  .compact-set { background: #1a2e1a; color: #4ade80; font-size: 14px; padding: 6px 12px; border-radius: 8px; cursor: pointer; }
+  .compact-set { background: #1a2e1a; color: #4ade80; font-size: 15px; padding: 6px 12px; border-radius: 8px; cursor: pointer; }
   .compact-set:active { background: #2a4e2a; }
 
   /* Exercise history panel — collapsed bar only (tappable to open sheet) */
   .history-panel { background: #0d0d14; border: 1px solid #1e1e2e; border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
-  .history-collapsed { display: flex; align-items: center; gap: 8px; padding: 10px 12px; cursor: pointer; font-size: 14px; }
-  .history-collapsed .muscle { color: #888; }
-  .history-collapsed .trend { color: #4ade80; font-weight: 600; }
-  .history-collapsed .trend.flat { color: #666; }
-  .history-collapsed .sessions { color: #555; font-size: 12px; }
-  .history-collapsed .rest-info { color: #555; font-size: 12px; }
-  .history-collapsed .chevron { color: #444; font-size: 11px; margin-left: auto; }
+  .history-collapsed { display: flex; align-items: center; gap: 8px; padding: 10px 12px; cursor: pointer; font-size: 15px; }
+  .history-collapsed .muscle { color: #aaa; }
+  .history-collapsed .trend { color: #5eead4; font-weight: 600; }
+  .history-collapsed .trend.flat { color: #888; }
+  .history-collapsed .sessions { color: #888; font-size: 13px; }
+  .history-collapsed .rest-info { color: #888; font-size: 13px; }
+  .history-collapsed .chevron { color: #888; font-size: 12px; margin-left: auto; }
 
   /* History full-screen sheet */
   .history-sheet-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
@@ -67,52 +67,52 @@
   .history-sheet-title { font-size: 18px; font-weight: 700; }
   .history-sheet-close { font-size: 15px; color: #888; cursor: pointer; padding: 8px 12px; border-radius: 8px; background: #1a1a1a; }
   .history-sheet-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 16px 24px; }
-  .history-sheet .coach-note { display: flex; align-items: flex-start; gap: 6px; background: rgba(59,130,246,0.06); border: 1px solid rgba(59,130,246,0.12); border-radius: 8px; padding: 10px 12px; margin-bottom: 14px; font-size: 13px; color: #8ab4f8; line-height: 1.4; }
+  .history-sheet .coach-note { display: flex; align-items: flex-start; gap: 6px; background: rgba(59,130,246,0.06); border: 1px solid rgba(59,130,246,0.12); border-radius: 8px; padding: 10px 12px; margin-bottom: 14px; font-size: 14px; color: #a5c8ff; line-height: 1.4; }
   .history-sheet .coach-note-icon { flex-shrink: 0; font-size: 14px; margin-top: 1px; }
   .history-sheet-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #1a1a1a; }
-  .history-sheet-date { font-size: 13px; color: #555; min-width: 56px; flex-shrink: 0; }
+  .history-sheet-date { font-size: 14px; color: #aaa; min-width: 56px; flex-shrink: 0; }
   .history-sheet-chips { display: flex; gap: 6px; flex-wrap: wrap; }
-  .history-sheet-chip { font-size: 13px; padding: 6px 12px; border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid #222; color: #999; cursor: pointer; white-space: nowrap; }
+  .history-sheet-chip { font-size: 13px; padding: 6px 12px; border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid #222; color: #bbb; cursor: pointer; white-space: nowrap; }
   .history-sheet-chip:active { opacity: 0.6; background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.3); }
   .history-sheet-trend { font-size: 13px; padding: 14px 0 4px; }
   .history-sheet-trend.up { color: #4ade80; }
-  .history-sheet-trend.flat { color: #666; }
+  .history-sheet-trend.flat { color: #888; }
   .history-sheet-trend.down { color: #f87171; }
 
-  .info-bar { display: flex; gap: 10px; font-size: 14px; color: #888; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #1a1a1a; flex-wrap: wrap; }
+  .info-bar { display: flex; gap: 10px; font-size: 14px; color: #999; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #1a1a1a; flex-wrap: wrap; }
 
   .set-card { background: #111118; border: 1px solid #282838; border-radius: 14px; padding: 14px; flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
   .set-card.resting { border-color: rgba(245,158,11,0.3); }
   .set-card.ready-state { border-color: rgba(34,197,94,0.3); }
   .set-card.superset-active { border-color: rgba(124,58,237,0.3); }
-  .set-label { font-size: 15px; color: #888; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
+  .set-label { font-size: 16px; color: #aaa; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
   .set-label-tag { font-size: 13px; padding: 3px 10px; border-radius: 6px; font-weight: 600; }
   .tag-resting { background: rgba(245,158,11,0.15); color: #f59e0b; }
   .tag-ready { background: rgba(34,197,94,0.15); color: #22c55e; }
   .tag-superset { background: rgba(124,58,237,0.15); color: #a78bfa; }
 
-  /* Single-column stacked field layout: weight on top, reps below, full width */
-  .fields-stack { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
-  .field-col { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
-  .field-label { font-size: 15px; color: #666; display: flex; justify-content: space-between; align-items: baseline; }
-  .field-label .field-title { font-size: 15px; color: #888; }
+  /* Two-column weight/reps grid layout */
+  .fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .field-col { display: flex; flex-direction: column; gap: 5px; min-width: 0; overflow: hidden; }
+  .field-label { font-size: 15px; color: #aaa; display: flex; justify-content: space-between; align-items: baseline; }
+  .field-label .field-title { font-size: 15px; color: #aaa; }
   .field-row { display: flex; align-items: center; gap: 4px; }
-  .field-input { flex: 1; background: #0a0a14; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 28px; font-weight: 600; padding: 12px 4px; text-align: center; font-variant-numeric: tabular-nums; min-width: 0; }
+  .field-input { flex: 1; background: #0a0a14; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 24px; font-weight: 600; padding: 12px 4px; text-align: center; font-variant-numeric: tabular-nums; min-width: 0; }
   .field-input:focus { border-color: #3b82f6; outline: none; }
-  .field-unit { font-size: 15px; color: #555; }
-  .adj-chip { background: #1a1a2e; border: 1px solid #2a2a40; color: #8888cc; font-size: 16px; font-weight: 500; padding: 10px 14px; border-radius: 8px; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+  .field-unit { font-size: 14px; color: #888; }
+  .adj-chip { background: #1a1a2e; border: 1px solid #2a2a40; color: #8888cc; font-size: 15px; font-weight: 500; padding: 10px 12px; border-radius: 8px; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
   .adj-chip:active { animation: chipFlash 0.15s; }
   /* Tappable last-value pills -- tap to apply */
   .last-refs { display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
   .last-ref { font-size: 13px; padding: 3px 8px; border-radius: 6px; cursor: pointer; border: 1px solid transparent; }
-  .last-ref.session { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); color: #93c5fd; }
-  .last-ref.history { background: rgba(255,255,255,0.04); border-color: #2a2a2a; color: #666; }
+  .last-ref.session { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); color: #a5c8ff; }
+  .last-ref.history { background: rgba(255,255,255,0.04); border-color: #2a2a2a; color: #999; }
   .last-ref:active { opacity: 0.7; }
 
   /* RPE selector */
   .rpe-row { display: flex; gap: 5px; margin-top: 6px; margin-bottom: 4px; }
-  .rpe-label { font-size: 13px; color: #555; margin-bottom: 3px; }
-  .rpe-chip { font-size: 15px; font-weight: 600; padding: 8px 14px; border-radius: 6px; cursor: pointer; background: #1a1a2e; border: 1px solid #2a2a40; color: #666; transition: all 0.15s; }
+  .rpe-label { font-size: 14px; color: #aaa; margin-bottom: 3px; }
+  .rpe-chip { font-size: 15px; font-weight: 600; padding: 8px 14px; border-radius: 6px; cursor: pointer; background: #1a1a2e; border: 1px solid #2a2a40; color: #888; transition: all 0.15s; }
   .rpe-chip:active { transform: scale(0.93); }
   .rpe-chip.selected { border-color: currentColor; }
   .rpe-chip.rpe-6, .rpe-chip.rpe-7 { }
@@ -121,17 +121,17 @@
   .rpe-chip.rpe-9.selected { background: rgba(249,115,22,0.15); color: #fb923c; border-color: #fb923c; }
   .rpe-chip.rpe-10.selected { background: rgba(239,68,68,0.15); color: #f87171; border-color: #f87171; }
 
-  .rep-calc { background: #0d0d18; border: 1px solid #222; border-radius: 8px; padding: 10px 14px; margin-top: 8px; font-size: 14px; color: #888; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-  .rep-calc .est-val { color: #a5b4fc; font-weight: 600; font-size: 15px; }
+  .rep-calc { background: #0d0d18; border: 1px solid #222; border-radius: 8px; padding: 10px 14px; margin-top: 8px; font-size: 15px; color: #aaa; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+  .rep-calc .est-val { color: #b8c7ff; font-weight: 600; font-size: 15px; }
   .rep-table { margin-top: 6px; border: 1px solid #222; border-radius: 8px; overflow: hidden; }
   .rep-table table { width: 100%; border-collapse: collapse; }
-  .rep-table th { background: #111118; color: #666; font-size: 12px; padding: 7px 10px; text-align: center; border-bottom: 1px solid #222; }
+  .rep-table th { background: #111118; color: #888; font-size: 12px; padding: 7px 10px; text-align: center; border-bottom: 1px solid #222; }
   .rep-table td { padding: 8px 10px; text-align: center; font-size: 15px; color: #999; border-bottom: 1px solid #1a1a1a; font-variant-numeric: tabular-nums; }
   .rep-table tr:last-child td { border-bottom: none; }
   .rep-table tr.current-row td { color: #a5b4fc; font-weight: 600; background: rgba(59,130,246,0.08); }
   .rep-table tr.origin-row td { color: #4ade80; background: rgba(34,197,94,0.06); }
   .rep-table td:first-child { color: #ccc; font-weight: 500; text-align: right; }
-  .rep-table td:last-child { color: #666; font-size: 13px; }
+  .rep-table td:last-child { color: #888; font-size: 13px; }
 
   /* rest bar lives OUTSIDE set-card so timer ticks can update it without rebuilding card */
   .rest-bar-wrap { height: 3px; background: #222; border-radius: 2px; margin-bottom: 10px; overflow: hidden; }
@@ -148,20 +148,20 @@
   .confirm-btn.ready-btn { background: #22c55e; color: #000; }
   .confirm-btn.superset-btn { background: #7c3aed; }
   .confirm-btn:disabled { background: #333; color: #666; }
-  .remaining { font-size: 13px; color: #555; text-align: center; margin-top: 6px; }
+  .remaining { font-size: 14px; color: #888; text-align: center; margin-top: 6px; }
 
   .bottom-actions { display: flex; gap: 6px; padding-top: 8px; margin-top: 8px; }
-  .action-btn { flex: 1; background: #111; border: 1px solid #282828; color: #666; font-size: 13px; padding: 9px; border-radius: 8px; text-align: center; cursor: pointer; }
+  .action-btn { flex: 1; background: #111; border: 1px solid #282828; color: #999; font-size: 14px; padding: 9px; border-radius: 8px; text-align: center; cursor: pointer; }
   .action-btn:active { background: #1a1a1a; }
 
   /* Exercise notes input */
-  .exercise-note { width: 100%; background: #0a0a14; border: 1px solid #222; border-radius: 8px; color: #777; font-size: 13px; padding: 8px 12px; margin-top: 8px; font-family: inherit; }
-  .exercise-note::placeholder { color: #444; }
+  .exercise-note { width: 100%; background: #0a0a14; border: 1px solid #222; border-radius: 8px; color: #999; font-size: 13px; padding: 8px 12px; margin-top: 8px; font-family: inherit; }
+  .exercise-note::placeholder { color: #777; }
   .exercise-note:focus { border-color: #3b82f6; color: #ccc; outline: none; }
 
   .done-view { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; gap: 8px; }
   .done-text { font-size: 16px; color: #a5b4fc; font-weight: 600; }
-  .done-sub { color: #555; font-size: 12px; }
+  .done-sub { color: #777; font-size: 13px; }
 
   /* --- Session Sheet --- */
   .sheet-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 98; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
@@ -177,9 +177,9 @@
   .sheet-ex-row { display: flex; align-items: center; padding: 11px 16px; cursor: pointer; transition: background 0.15s; }
   .sheet-ex-row:active { background: #222; }
   .sheet-ex-row.current { background: #1a1a2e; }
-  .sheet-ex-name { flex: 1; font-size: 15px; }
-  .sheet-ex-name.skipped-ex { text-decoration: line-through; color: #555; }
-  .sheet-ex-sets { font-size: 14px; color: #888; margin-right: 8px; }
+  .sheet-ex-name { flex: 1; font-size: 16px; }
+  .sheet-ex-name.skipped-ex { text-decoration: line-through; color: #777; }
+  .sheet-ex-sets { font-size: 15px; color: #aaa; margin-right: 8px; }
   .sheet-ex-check { color: #4ade80; margin-right: 8px; }
   .sheet-ex-skip-badge { color: #888; margin-right: 8px; font-size: 12px; }
   .sheet-ex-chevron { color: #444; font-size: 12px; transition: transform 0.2s; }
@@ -193,15 +193,15 @@
   .sheet-ex-set-row.planned-row { background: transparent; }
   .sheet-ex-set-row.skipped-row { background: rgba(255,255,255,0.02); }
   .sheet-ex-set-icon { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; }
-  .sheet-ex-set-num { font-size: 13px; color: #555; width: 34px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
-  .sheet-ex-set-vals { flex: 1; font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .sheet-ex-set-num { font-size: 14px; color: #888; width: 34px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+  .sheet-ex-set-vals { flex: 1; font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
   .sheet-ex-set-row.done-row .sheet-ex-set-vals { color: #e8e8e8; }
   .sheet-ex-set-row.planned-row .sheet-ex-set-vals { color: #777; }
-  .sheet-ex-set-row.skipped-row .sheet-ex-set-vals { color: #555; text-decoration: line-through; }
-  .sheet-ex-set-row.planned-row .sheet-ex-set-num { color: #555; }
+  .sheet-ex-set-row.skipped-row .sheet-ex-set-vals { color: #777; text-decoration: line-through; }
+  .sheet-ex-set-row.planned-row .sheet-ex-set-num { color: #777; }
   .sheet-ex-set-tag { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 5px; flex-shrink: 0; }
   .sheet-ex-set-tag.done-tag { background: rgba(34,197,94,0.15); color: #4ade80; }
-  .sheet-ex-set-tag.skipped-tag { background: rgba(255,255,255,0.06); color: #666; }
+  .sheet-ex-set-tag.skipped-tag { background: rgba(255,255,255,0.06); color: #888; }
   .sheet-ex-nav { display: flex; justify-content: flex-end; }
   .sheet-ex-nav-btn { background: #1a1a2e; border: 1px solid #2a2a40; color: #a5b4fc; font-size: 13px; padding: 6px 14px; border-radius: 8px; cursor: pointer; }
   .sheet-ss-label { font-size: 11px; color: #a78bfa; padding: 8px 16px 2px; background: rgba(124,58,237,0.05); }
@@ -216,12 +216,12 @@
   .add-sheet-handle { width: 36px; height: 4px; background: #555; border-radius: 2px; margin: 10px auto 0; }
   .add-sheet-title { font-size: 15px; font-weight: 600; padding: 12px 16px 8px; }
   .add-search { margin: 0 16px 10px; background: #111; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 15px; padding: 10px 14px; }
-  .add-search::placeholder { color: #555; }
+  .add-search::placeholder { color: #777; }
   .add-results { flex: 1; overflow-y: auto; padding: 0 16px 16px; display: flex; flex-direction: column; gap: 4px; }
   .add-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: #111; border-radius: 8px; cursor: pointer; }
   .add-item:active { background: #1a1a1a; }
   .add-item-name { font-size: 14px; }
-  .add-item-muscle { font-size: 12px; color: #666; }
+  .add-item-muscle { font-size: 12px; color: #888; }
   .add-btn-chip { background: #1a2e1a; color: #4ade80; font-size: 12px; padding: 4px 10px; border-radius: 6px; }
 
   /* --- End Session --- */
@@ -233,18 +233,18 @@
   .end-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 16px; }
   .end-stat { background: #111118; border-radius: 12px; padding: 14px; text-align: center; }
   .end-stat-val { font-size: 24px; font-weight: 700; }
-  .end-stat-label { font-size: 12px; color: #666; margin-top: 4px; }
+  .end-stat-label { font-size: 12px; color: #888; margin-top: 4px; }
   .end-list { flex: 1; overflow-y: auto; padding: 0 16px; }
   .end-ex { padding: 12px 0; border-bottom: 1px solid #1a1a1a; }
   .end-ex-name { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
-  .end-ex-name.skipped-ex { text-decoration: line-through; color: #666; }
+  .end-ex-name.skipped-ex { text-decoration: line-through; color: #888; }
   .end-ex-sets { display: flex; flex-wrap: wrap; gap: 6px; }
   .end-set-chip { background: #1a1a2e; color: #a5b4fc; font-size: 13px; padding: 4px 10px; border-radius: 6px; }
-  .end-set-chip.skipped-chip { background: #1a1a1a; color: #555; text-decoration: line-through; }
-  .end-note { font-size: 12px; color: #666; margin-top: 6px; font-style: italic; }
+  .end-set-chip.skipped-chip { background: #1a1a1a; color: #777; text-decoration: line-through; }
+  .end-note { font-size: 12px; color: #888; margin-top: 6px; font-style: italic; }
   .end-save { margin: 16px; background: #22c55e; color: #000; border: none; border-radius: 14px; padding: 16px; font-size: 16px; font-weight: 700; cursor: pointer; }
 
-  .swipe-hint { position: fixed; bottom: 72px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.08); color: #555; font-size: 11px; padding: 5px 12px; border-radius: 12px; pointer-events: none; transition: opacity 0.5s; }
+  .swipe-hint { position: fixed; bottom: 72px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.08); color: #777; font-size: 12px; padding: 5px 12px; border-radius: 12px; pointer-events: none; transition: opacity 0.5s; }
   .swipe-hint.hidden { opacity: 0; }
 
   /* -- Bottom Nav -- */
@@ -263,18 +263,18 @@
 
   /* -- Home (no session) -- */
   .home-greeting { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
-  .home-sub { font-size: 14px; color: #666; margin-bottom: 28px; }
+  .home-sub { font-size: 14px; color: #888; margin-bottom: 28px; }
   .home-start-btn { background: #3b82f6; color: #fff; border: none; border-radius: 16px; padding: 18px; font-size: 17px; font-weight: 700; width: 100%; cursor: pointer; margin-bottom: 24px; }
-  .home-section { font-size: 12px; color: #555; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .home-section { font-size: 12px; color: #777; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
   .home-template { background: #111118; border: 1px solid #222; border-radius: 12px; padding: 14px 16px; margin-bottom: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
   .home-template:active { background: #1a1a28; }
   .home-template-name { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
-  .home-template-meta { font-size: 12px; color: #666; }
+  .home-template-meta { font-size: 12px; color: #888; }
   .home-template-arrow { color: #444; font-size: 18px; }
   .home-last { background: #111118; border-radius: 12px; padding: 14px 16px; margin-bottom: 24px; }
-  .home-last-label { font-size: 12px; color: #555; margin-bottom: 6px; }
+  .home-last-label { font-size: 12px; color: #777; margin-bottom: 6px; }
   .home-last-name { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-  .home-last-stats { font-size: 13px; color: #777; }
+  .home-last-stats { font-size: 13px; color: #999; }
 
   /* -- Cardio screen -- */
   .cardio-polar-row { display: flex; align-items: center; gap: 8px; background: #111118; border: 1px solid #1e1e2e; border-radius: 10px; padding: 10px 14px; margin-bottom: 20px; }
@@ -282,11 +282,11 @@
   .polar-dot.connected { background: #22c55e; animation: pulse 1.5s infinite; }
   .polar-dot.disconnected { background: #555; }
   .polar-status-text { flex: 1; font-size: 13px; }
-  .polar-device-name { font-size: 12px; color: #555; }
+  .polar-device-name { font-size: 12px; color: #777; }
   .cardio-hr-hero { text-align: center; padding: 28px 0 20px; }
   .cardio-hr-num { font-size: 88px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
   .cardio-hr-num.no-signal { color: #333; font-size: 64px; padding-top: 12px; }
-  .cardio-hr-unit { font-size: 16px; color: #666; margin-top: 4px; }
+  .cardio-hr-unit { font-size: 16px; color: #888; margin-top: 4px; }
   .cardio-zone { display: inline-block; font-size: 13px; font-weight: 600; padding: 4px 14px; border-radius: 20px; margin-top: 8px; }
   .zone-fat { background: rgba(59,130,246,0.15); color: #60a5fa; }
   .zone-cardio { background: rgba(245,158,11,0.15); color: #f59e0b; }
@@ -294,7 +294,7 @@
   .cardio-stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
   .cardio-stat { background: #111118; border-radius: 12px; padding: 14px; text-align: center; }
   .cardio-stat-val { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
-  .cardio-stat-label { font-size: 12px; color: #666; margin-top: 3px; }
+  .cardio-stat-label { font-size: 12px; color: #888; margin-top: 3px; }
   .cardio-ctrl-row { display: flex; gap: 12px; }
   .cardio-btn { flex: 1; border: none; border-radius: 14px; padding: 16px; font-size: 16px; font-weight: 700; cursor: pointer; }
   .cardio-btn.start { background: #22c55e; color: #000; }
@@ -303,7 +303,7 @@
   .cardio-btn.resume { background: #3b82f6; color: #fff; }
 
   /* -- Settings screen -- */
-  .settings-section { font-size: 12px; color: #555; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin: 20px 0 10px; }
+  .settings-section { font-size: 12px; color: #777; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin: 20px 0 10px; }
   .settings-section:first-child { margin-top: 0; }
   .settings-row { background: #111118; border-radius: 12px; margin-bottom: 2px; overflow: hidden; }
   .settings-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; border-bottom: 1px solid #1a1a1a; }
@@ -312,11 +312,11 @@
   .settings-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
   .settings-label { flex: 1; }
   .settings-name { font-size: 15px; }
-  .settings-desc { font-size: 12px; color: #666; margin-top: 2px; }
+  .settings-desc { font-size: 12px; color: #888; margin-top: 2px; }
   .settings-status { font-size: 13px; font-weight: 500; }
   .status-connected { color: #22c55e; }
   .status-enabled { color: #22c55e; }
-  .status-off { color: #555; }
+  .status-off { color: #777; }
   .settings-chevron { color: #444; font-size: 14px; margin-left: 4px; }
   .settings-toggle { width: 44px; height: 26px; background: #22c55e; border-radius: 13px; position: relative; cursor: pointer; flex-shrink: 0; transition: background 0.2s; }
   .settings-toggle.off { background: #333; }
@@ -331,7 +331,7 @@
   .modal-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
   .modal-row { display: flex; gap: 12px; }
   .modal-group { flex: 1; }
-  .modal-group label { font-size: 11px; color: #666; display: block; margin-bottom: 4px; }
+  .modal-group label { font-size: 11px; color: #888; display: block; margin-bottom: 4px; }
   .modal-group input { width: 100%; background: #0d0d1a; border: 1px solid #444; border-radius: 8px; color: #fff; font-size: 18px; font-weight: 600; padding: 10px; text-align: center; }
   .modal-actions { display: flex; gap: 8px; margin-top: 16px; }
   .modal-btn { flex: 1; padding: 10px; border-radius: 8px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; }
@@ -608,7 +608,7 @@ function openHistorySheet(idx) {
       bodyHTML += `<div class="history-sheet-trend flat">\u2192 flat over ${numSessions} sessions</div>`;
     }
   } else {
-    bodyHTML += `<div style="color:#555;font-size:14px;padding:20px 0;text-align:center;">No history yet</div>`;
+    bodyHTML += `<div style="color:#777;font-size:14px;padding:20px 0;text-align:center;">No history yet</div>`;
   }
 
   document.getElementById('historySheetBody').innerHTML = bodyHTML;
@@ -760,8 +760,8 @@ function buildSlide(ex, s, idx) {
 
   const repCalc = `
     <div class="rep-calc" onclick="toggleRT('${tableId}')">
-      <span><span style="color:#777">e1RM:</span> <span class="est-val">${Math.round(oneRM)} lb</span></span>
-      <span style="color:#555;font-size:13px">Equiv \u25be</span>
+      <span><span style="color:#999">e1RM:</span> <span class="est-val">${Math.round(oneRM)} lb</span></span>
+      <span style="color:#777;font-size:13px">Equiv \u25be</span>
     </div>
     <div class="rep-table" id="${tableId}" style="display:${repTableOpen[tableId]?'block':'none'}">
       <table><tr><th>Weight</th><th>Reps</th><th></th></tr>${rows}</table>
@@ -797,9 +797,9 @@ function buildSlide(ex, s, idx) {
   }).join('');
   const rpeRow = `<div style="margin-top:8px"><div class="rpe-label">RPE (optional)</div><div class="rpe-row">${rpeChips}</div></div>`;
 
-  const fieldsStack = `<div class="fields-stack">
+  const fieldsGrid = `<div class="fields-grid">
     <div class="field-col">
-      <div class="field-label"><span class="field-title">Weight <span style="font-size:13px;color:#555;font-weight:400">lb</span></span></div>
+      <div class="field-label"><span class="field-title">Weight <span style="font-size:14px;color:#888;font-weight:400">lb</span></span></div>
       <div class="field-row">
         <div class="adj-chip" onclick="adjW(${idx},-2.5)">\u22122.5</div>
         <input class="field-input" type="number" value="${s.nextWeight}" id="w_${idx}" onchange="syncW(${idx})">
@@ -844,7 +844,7 @@ function buildSlide(ex, s, idx) {
   return `${ssBar}${chips}${histPanel}${restBarHTML}
     <div class="${cardCls}">
       <div class="set-label"><span>Set ${s.currentSet} of ${s.total}</span>${tag}</div>
-      ${restCtrls}${fieldsStack}${rpeRow}${repCalc}${btn}
+      ${restCtrls}${fieldsGrid}${rpeRow}${repCalc}${btn}
       ${remaining>0?`<div class="remaining">${remaining} more after this</div>`:''}
     </div>${bottomActions}`;
 }
@@ -1037,7 +1037,7 @@ function buildSheetExRow(idx) {
   s.completed.forEach((c, si) => {
     if (c.skipped) {
       setRows += `<div class="sheet-ex-set-row skipped-row">
-        <span class="sheet-ex-set-icon" style="color:#555">\u23ed</span>
+        <span class="sheet-ex-set-icon" style="color:#777">\u23ed</span>
         <span class="sheet-ex-set-num">Set ${si+1}</span>
         <span class="sheet-ex-set-vals">skipped</span>
         <span class="sheet-ex-set-tag skipped-tag">skip</span>
