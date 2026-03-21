@@ -68,6 +68,10 @@
   .history-trend-line.flat { color: #666; }
   .history-trend-line.down { color: #f87171; }
 
+  /* Coach note */
+  .coach-note { display: flex; align-items: flex-start; gap: 6px; background: rgba(59,130,246,0.06); border: 1px solid rgba(59,130,246,0.12); border-radius: 8px; padding: 8px 10px; margin-bottom: 10px; font-size: 12px; color: #8ab4f8; line-height: 1.4; }
+  .coach-note-icon { flex-shrink: 0; font-size: 13px; margin-top: 1px; }
+
   .info-bar { display: flex; gap: 10px; font-size: 14px; color: #888; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #1a1a1a; flex-wrap: wrap; }
 
   .set-card { background: #111118; border: 1px solid #282838; border-radius: 14px; padding: 14px; flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
@@ -405,6 +409,7 @@
 // -- DATA --
 let exercises = [
   { name:'Bench Press', muscle:'Chest', last:{w:185,r:5}, planned:4, reps:5, weight:185, rest:90, ss:null,
+    coachNote:'Pause at chest, drive through heels. Ready for +5 lb if all sets hit 5.',
     history: [
       { date:'Mar 19', sets:[{w:185,r:5},{w:185,r:5},{w:185,r:4},{w:185,r:3}] },
       { date:'Mar 16', sets:[{w:180,r:5},{w:180,r:5},{w:180,r:5},{w:180,r:5}] },
@@ -412,6 +417,7 @@ let exercises = [
       { date:'Mar 7',  sets:[{w:175,r:5},{w:175,r:5},{w:175,r:5},{w:175,r:4}] },
     ]},
   { name:'Tricep Pushdown', muscle:'Triceps', last:{w:50,r:10}, planned:3, reps:10, weight:50, rest:60, ss:'A', ssOrder:0,
+    coachNote:'Keep elbows pinned. Use rope attachment.',
     history: [
       { date:'Mar 19', sets:[{w:50,r:10},{w:50,r:10},{w:50,r:9}] },
       { date:'Mar 16', sets:[{w:47.5,r:10},{w:47.5,r:10},{w:47.5,r:10}] },
@@ -419,6 +425,7 @@ let exercises = [
       { date:'Mar 7',  sets:[{w:45,r:10},{w:45,r:10},{w:45,r:10}] },
     ]},
   { name:'Skull Crushers', muscle:'Triceps', last:{w:40,r:10}, planned:3, reps:10, weight:40, rest:75, ss:'A', ssOrder:1,
+    coachNote:'EZ-bar. Lower to forehead, not behind head.',
     history: [
       { date:'Mar 19', sets:[{w:40,r:10},{w:40,r:10},{w:40,r:8}] },
       { date:'Mar 16', sets:[{w:40,r:10},{w:40,r:9},{w:37.5,r:10}] },
@@ -426,6 +433,7 @@ let exercises = [
       { date:'Mar 7',  sets:[{w:35,r:10},{w:35,r:10},{w:35,r:9}] },
     ]},
   { name:'Incline DB Press', muscle:'Upper Chest', last:{w:65,r:8}, planned:3, reps:8, weight:65, rest:75, ss:null,
+    coachNote:'30° incline. Touch outer chest, full lockout.',
     history: [
       { date:'Mar 19', sets:[{w:65,r:8},{w:65,r:8},{w:65,r:7}] },
       { date:'Mar 16', sets:[{w:65,r:8},{w:65,r:7},{w:60,r:8}] },
@@ -433,6 +441,7 @@ let exercises = [
       { date:'Mar 7',  sets:[{w:60,r:8},{w:60,r:7},{w:55,r:8}] },
     ]},
   { name:'Cable Fly', muscle:'Chest', last:{w:30,r:12}, planned:3, reps:12, weight:30, rest:60, ss:null,
+    coachNote:'Slight forward lean, hands meet at nipple line. Squeeze 1s at peak.',
     history: [
       { date:'Mar 19', sets:[{w:30,r:12},{w:30,r:12},{w:30,r:11}] },
       { date:'Mar 16', sets:[{w:30,r:12},{w:30,r:11},{w:27.5,r:12}] },
@@ -670,6 +679,11 @@ function buildSlide(ex, s, idx) {
   // History panel replaces old info-bar
   const histPanel = buildHistoryPanel(ex, idx);
 
+  // Coach note
+  const coachNoteHTML = ex.coachNote
+    ? `<div class="coach-note"><span class="coach-note-icon">💡</span><span>${ex.coachNote}</span></div>`
+    : '';
+
   // Rest bar (outside card so timer tick can update without rebuild)
   let restBarHTML = '';
   if (isResting) {
@@ -791,7 +805,7 @@ function buildSlide(ex, s, idx) {
     <div class="action-btn" onclick="swapExercise(${idx})">Swap</div>
   </div>${noteInput}` : '';
 
-  return `${ssBar}${chips}${histPanel}${restBarHTML}
+  return `${ssBar}${chips}${coachNoteHTML}${histPanel}${restBarHTML}
     <div class="${cardCls}">
       <div class="set-label"><span>Set ${s.currentSet} of ${s.total}</span>${tag}</div>
       ${restCtrls}${fieldsGrid}${rpeRow}${repCalc}${btn}
@@ -1188,13 +1202,14 @@ function goToSlide(idx) {
   updateProgressDots();
 }
 const cont=document.querySelector('.carousel-container');
-cont.addEventListener('touchstart',e=>{dragStartX=e.touches[0].clientX;isDragging=true;document.getElementById('carousel').classList.add('dragging');},{passive:true});
-cont.addEventListener('touchmove',e=>{if(!isDragging)return;dragDelta=e.touches[0].clientX-dragStartX;document.getElementById('carousel').style.transform=`translateX(${-(currentSlide*window.innerWidth)+dragDelta}px)`;},{passive:true});
-cont.addEventListener('touchend',finishDrag);
-cont.addEventListener('mousedown',e=>{dragStartX=e.clientX;isDragging=true;document.getElementById('carousel').classList.add('dragging');});
-cont.addEventListener('mousemove',e=>{if(!isDragging)return;dragDelta=e.clientX-dragStartX;document.getElementById('carousel').style.transform=`translateX(${-(currentSlide*window.innerWidth)+dragDelta}px)`;});
-cont.addEventListener('mouseup',finishDrag);
-cont.addEventListener('mouseleave',()=>{if(isDragging)finishDrag();});
+let dragStarted=false; // true once movement exceeds threshold
+cont.addEventListener('touchstart',e=>{dragStartX=e.touches[0].clientX;isDragging=true;dragStarted=false;dragDelta=0;},{passive:true});
+cont.addEventListener('touchmove',e=>{if(!isDragging)return;dragDelta=e.touches[0].clientX-dragStartX;if(!dragStarted&&Math.abs(dragDelta)>10){dragStarted=true;document.getElementById('carousel').classList.add('dragging');}if(dragStarted){document.getElementById('carousel').style.transform=`translateX(${-(currentSlide*window.innerWidth)+dragDelta}px)`;}},{passive:true});
+cont.addEventListener('touchend',()=>{if(dragStarted){finishDrag();}else{isDragging=false;dragDelta=0;}});
+cont.addEventListener('mousedown',e=>{dragStartX=e.clientX;isDragging=true;dragStarted=false;dragDelta=0;});
+cont.addEventListener('mousemove',e=>{if(!isDragging)return;dragDelta=e.clientX-dragStartX;if(!dragStarted&&Math.abs(dragDelta)>10){dragStarted=true;document.getElementById('carousel').classList.add('dragging');}if(dragStarted){document.getElementById('carousel').style.transform=`translateX(${-(currentSlide*window.innerWidth)+dragDelta}px)`;}});
+cont.addEventListener('mouseup',()=>{if(dragStarted){finishDrag();}else{isDragging=false;dragDelta=0;}});
+cont.addEventListener('mouseleave',()=>{if(dragStarted)finishDrag();else{isDragging=false;dragDelta=0;}});
 function finishDrag() {
   if(!isDragging)return;
   isDragging=false;
