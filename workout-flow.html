@@ -100,8 +100,11 @@
   .adj-btn { background: #1a1a2e; border: 1px solid #2a2a40; color: #aaa; font-size: 20px; font-weight: 600; width: 36px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; }
   .adj-btn:active { background: #2a2a40; transform: scale(0.95); }
   .adj-step { font-size: 12px; color: #777; flex-shrink: 0; }
+  .field-input-wrap { position: relative; width: 100%; }
   .field-input { width: 100%; background: #0a0a14; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 24px; font-weight: 600; padding: 12px 4px; text-align: center; font-variant-numeric: tabular-nums; min-width: 0; }
   .field-input:focus { border-color: #3b82f6; outline: none; }
+  .field-input:focus + .field-suffix { display: none; }
+  .field-suffix { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 14px; color: #666; font-weight: 400; pointer-events: none; }
   .field-unit { font-size: 14px; color: #888; }
   .adj-chip:active { animation: chipFlash 0.15s; }
   /* Tappable last-value pills -- tap to apply */
@@ -799,13 +802,17 @@ function buildSlide(ex, s, idx) {
   }).join('');
   const rpeRow = `<div style="margin-top:8px"><div class="rpe-label">RPE (optional)</div><div class="rpe-row">${rpeChips}</div></div>`;
 
+  const weightUnit = 'lbs'; // or 'kg'
   const fieldsGrid = `<div class="fields-grid">
     <div class="field-col">
       <div class="field-label">
-        <span class="field-title">Weight <span style="font-size:13px;color:#888;font-weight:400">lb</span></span>
+        <span class="field-title">Weight</span>
         <span class="adj-group"><span class="adj-btn" onclick="adjW(${idx},-2.5)">&minus;</span><span class="adj-btn" onclick="adjW(${idx},2.5)">+</span><span class="adj-step">2.5</span></span>
       </div>
-      <input class="field-input" type="number" value="${s.nextWeight}" id="w_${idx}" onchange="syncW(${idx})">
+      <div class="field-input-wrap">
+        <input class="field-input" type="number" value="${s.nextWeight}" id="w_${idx}" onchange="syncW(${idx})">
+        <span class="field-suffix">${weightUnit}</span>
+      </div>
       <div class="last-refs">${wLastRefs}</div>
     </div>
     <div class="field-col">
@@ -813,7 +820,10 @@ function buildSlide(ex, s, idx) {
         <span class="field-title">${rLabel}</span>
         <span class="adj-group"><span class="adj-btn" onclick="${rMinus}">&minus;</span><span class="adj-btn" onclick="${rPlus}">+</span><span class="adj-step">1</span></span>
       </div>
-      <input class="field-input" type="number" value="${ex.reps}" id="r_${idx}" ${rReadonly}>
+      <div class="field-input-wrap">
+        <input class="field-input" type="number" value="${ex.reps}" id="r_${idx}" ${rReadonly}>
+        <span class="field-suffix">reps</span>
+      </div>
       <div class="last-refs">${rLastRefs}</div>
     </div>
   </div>`;
