@@ -92,14 +92,12 @@
   .tag-superset { background: rgba(124,58,237,0.15); color: #a78bfa; }
 
   /* Two-column weight/reps grid layout */
-  .fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-  .field-col { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
-  .field-label { font-size: 15px; color: #aaa; display: flex; align-items: center; gap: 6px; }
-  .field-label .field-title { font-size: 15px; color: #aaa; }
-  .field-label .adj-group { display: flex; align-items: center; gap: 3px; margin-left: auto; }
-  .adj-btn { background: #1a1a2e; border: 1px solid #2a2a40; color: #aaa; font-size: 20px; font-weight: 600; width: 36px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; touch-action: manipulation; }
-  .adj-btn:active { background: #2a2a40; transform: scale(0.95); }
-  .adj-step { font-size: 14px; color: #999; flex-shrink: 0; }
+  .fields-grid { display: flex; gap: 8px; margin-bottom: 10px; align-items: stretch; }
+  .field-group { display: flex; align-items: stretch; gap: 4px; min-width: 0; }
+  .field-group.weight-group { flex: 3; }
+  .field-group.reps-group { flex: 2; }
+  .adj-stack { display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; }
+  .adj-btn { background: #1a1a2e; border: 1px solid #2a2a40; color: #aaa; font-size: 18px; font-weight: 600; width: 34px; flex: 1; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; touch-action: manipulation; }
   .field-input-wrap { position: relative; width: 100%; }
   .field-input { width: 100%; background: #0a0a14; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 24px; font-weight: 600; padding: 12px 30px 12px 4px; text-align: center; font-variant-numeric: tabular-nums; min-width: 0; }
   .field-input:focus { border-color: #3b82f6; outline: none; }
@@ -804,29 +802,28 @@ function buildSlide(ex, s, idx) {
 
   const weightUnit = 'lbs'; // or 'kg'
   const fieldsGrid = `<div class="fields-grid">
-    <div class="field-col">
-      <div class="field-label">
-        <span class="field-title">Weight</span>
-        <span class="adj-group"><span class="adj-btn" onclick="adjW(${idx},-2.5)">&minus;</span><span class="adj-btn" onclick="adjW(${idx},2.5)">+</span></span>
-      </div>
+    <div class="field-group weight-group">
       <div class="field-input-wrap">
         <input class="field-input" type="number" value="${s.nextWeight}" id="w_${idx}" onchange="syncW(${idx})">
         <span class="field-suffix">${weightUnit}</span>
       </div>
-      <div class="last-refs">${wLastRefs}</div>
-    </div>
-    <div class="field-col">
-      <div class="field-label">
-        <span class="field-title">${rLabel}</span>
-        <span class="adj-group"><span class="adj-btn" onclick="${rMinus}">&minus;</span><span class="adj-btn" onclick="${rPlus}">+</span></span>
+      <div class="adj-stack">
+        <div class="adj-btn" onclick="adjW(${idx},2.5)">+</div>
+        <div class="adj-btn" onclick="adjW(${idx},-2.5)">&minus;</div>
       </div>
+    </div>
+    <div class="field-group reps-group">
       <div class="field-input-wrap">
         <input class="field-input" type="number" value="${ex.reps}" id="r_${idx}" ${rReadonly}>
         <span class="field-suffix">reps</span>
       </div>
-      <div class="last-refs">${rLastRefs}</div>
+      <div class="adj-stack">
+        <div class="adj-btn" onclick="${rPlus}">+</div>
+        <div class="adj-btn" onclick="${rMinus}">&minus;</div>
+      </div>
     </div>
-  </div>`;
+  </div>
+  <div class="last-refs">${wLastRefs}${rLastRefs}</div>`;
 
   let btn = '';
   if (isResting) {
