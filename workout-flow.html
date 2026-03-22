@@ -291,16 +291,17 @@
 
   /* THIS WEEK row */
   .home-section { font-size: 12px; color: #9CA3AF; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; margin-top: 4px; }
-  .home-week-row { display: flex; gap: 6px; margin-bottom: 20px; overflow-x: auto; }
-  .home-day-pill { flex: 1; min-width: 0; background: #0f1a16; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 10px 4px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 3px; }
-  .home-day-pill.today { border-color: #22c55e; box-shadow: 0 0 12px rgba(34,197,94,0.4); }
+  .home-week-row { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; padding: 0 2px; scrollbar-width: none; }
+  .home-week-row::-webkit-scrollbar { display: none; }
+  .home-day-pill { flex: 0 0 calc((100% - 16px) / 3); scroll-snap-align: center; background: #0f1a16; border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 14px 8px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .home-day-pill.today { border-color: #22c55e; box-shadow: 0 0 14px rgba(34,197,94,0.4); }
   .home-day-pill.rest-day .day-name { color: #4B5563; }
   .home-day-pill.rest-day .day-workout { color: #4B5563; }
-  .home-day-pill .day-name { font-size: 13px; font-weight: 700; text-transform: uppercase; color: #9CA3AF; font-family: 'Space Grotesk', system-ui, sans-serif; }
+  .home-day-pill .day-name { font-size: 15px; font-weight: 700; text-transform: uppercase; color: #9CA3AF; font-family: 'Space Grotesk', system-ui, sans-serif; }
   .home-day-pill.today .day-name { color: #4ade80; }
-  .home-day-pill .day-workout { font-size: 11px; color: #6B7280; line-height: 1.3; min-height: 16px; display: flex; align-items: center; }
+  .home-day-pill .day-workout { font-size: 13px; color: #6B7280; line-height: 1.3; }
   .home-day-pill.today .day-workout { color: #F3F4F6; font-weight: 600; }
-  .home-day-pill .day-check { font-size: 14px; color: #22c55e; min-height: 16px; }
+  .home-day-pill .day-check { font-size: 16px; color: #22c55e; min-height: 18px; }
 
   /* Session progress + elapsed */
   .home-stats-row { display: flex; gap: 10px; margin-bottom: 20px; }
@@ -1352,6 +1353,16 @@ function switchTab(tab) {
 // Initialize screen visibility after all variables are defined
 switchTab('workout');
 
+// Scroll week row so today is centered
+setTimeout(() => {
+  const row = document.getElementById('weekRow');
+  const today = row?.querySelector('.today');
+  if (row && today) {
+    const offset = today.offsetLeft - (row.offsetWidth / 2) + (today.offsetWidth / 2);
+    row.scrollLeft = offset;
+  }
+}, 50);
+
 function startSessionFromHome() {
   sessionActive = true;
   startSessionTimer();
@@ -1434,29 +1445,9 @@ function toggleSetting(key) {
     <div class="screen-hdr-action" onclick="switchTab('settings')">&#9881;</div>
   </div>
   <div class="screen-body">
-    <div class="home-badge">GYM MODE &bull; v0.1.0</div>
-    <div class="home-greeting">Today's Session</div>
-
-    <!-- Session card -->
-    <div class="home-session-card">
-      <div class="home-session-name">Push A &mdash; Chest + Triceps</div>
-      <div class="home-session-meta">
-        <span class="home-meta-pill phase">STRENGTH</span>
-        <span class="home-meta-pill caloric">SURPLUS</span>
-        <span class="home-meta-pill variant">GREEN</span>
-      </div>
-      <div class="home-session-duration">Est: ~55 min &middot; 5 exercises &middot; 16 sets</div>
-      <div class="home-session-row">
-        <div class="home-log-toggle"><div class="home-log-dot"></div> Log Workout</div>
-      </div>
-      <div style="text-align: center;">
-        <button class="home-start-btn" onclick="startSessionFromHome()">Start Session</button>
-      </div>
-    </div>
-
-    <!-- THIS WEEK -->
-    <div class="home-section">This Week</div>
-    <div class="home-week-row">
+    <!-- THIS WEEK — scrollable, 3 visible, today centered -->
+    <div class="home-section" style="margin-top:0">This Week</div>
+    <div class="home-week-row" id="weekRow">
       <div class="home-day-pill">
         <span class="day-name">Mon</span>
         <span class="day-workout">Upper A</span>
@@ -1491,6 +1482,26 @@ function toggleSetting(key) {
         <span class="day-name">Sun</span>
         <span class="day-workout">Rest</span>
         <span class="day-check"></span>
+      </div>
+    </div>
+
+    <div class="home-badge">GYM MODE &bull; v0.1.0</div>
+    <div class="home-greeting">Today's Session</div>
+
+    <!-- Session card -->
+    <div class="home-session-card">
+      <div class="home-session-name">Push A &mdash; Chest + Triceps</div>
+      <div class="home-session-meta">
+        <span class="home-meta-pill phase">STRENGTH</span>
+        <span class="home-meta-pill caloric">SURPLUS</span>
+        <span class="home-meta-pill variant">GREEN</span>
+      </div>
+      <div class="home-session-duration">Est: ~55 min &middot; 5 exercises &middot; 16 sets</div>
+      <div class="home-session-row">
+        <div class="home-log-toggle"><div class="home-log-dot"></div> Log Workout</div>
+      </div>
+      <div style="text-align: center;">
+        <button class="home-start-btn" onclick="startSessionFromHome()">Start Session</button>
       </div>
     </div>
 
