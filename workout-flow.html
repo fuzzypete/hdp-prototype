@@ -96,11 +96,13 @@
   .field-col { display: flex; flex-direction: column; gap: 5px; min-width: 0; overflow: hidden; }
   .field-label { font-size: 15px; color: #aaa; display: flex; align-items: center; gap: 6px; }
   .field-label .field-title { font-size: 15px; color: #aaa; }
-  .field-label .adj-chips { display: flex; gap: 4px; margin-left: auto; }
+  .field-label .adj-group { display: flex; align-items: center; gap: 3px; margin-left: auto; }
+  .adj-btn { background: #1a1a2e; border: 1px solid #2a2a40; color: #aaa; font-size: 20px; font-weight: 600; width: 36px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; }
+  .adj-btn:active { background: #2a2a40; transform: scale(0.95); }
+  .adj-step { font-size: 12px; color: #777; flex-shrink: 0; }
   .field-input { width: 100%; background: #0a0a14; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 24px; font-weight: 600; padding: 12px 4px; text-align: center; font-variant-numeric: tabular-nums; min-width: 0; }
   .field-input:focus { border-color: #3b82f6; outline: none; }
   .field-unit { font-size: 14px; color: #888; }
-  .adj-chip { background: #1a1a2e; border: 1px solid #2a2a40; color: #8888cc; font-size: 13px; font-weight: 500; padding: 5px 9px; border-radius: 6px; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
   .adj-chip:active { animation: chipFlash 0.15s; }
   /* Tappable last-value pills -- tap to apply */
   .last-refs { display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
@@ -801,7 +803,7 @@ function buildSlide(ex, s, idx) {
     <div class="field-col">
       <div class="field-label">
         <span class="field-title">Weight <span style="font-size:13px;color:#888;font-weight:400">lb</span></span>
-        <span class="adj-chips"><span class="adj-chip" onclick="adjW(${idx},-2.5)">\u22122.5</span><span class="adj-chip" onclick="adjW(${idx},2.5)">+2.5</span></span>
+        <span class="adj-group"><span class="adj-btn" onclick="adjW(${idx},-2.5)">&minus;</span><span class="adj-btn" onclick="adjW(${idx},2.5)">+</span><span class="adj-step">2.5</span></span>
       </div>
       <input class="field-input" type="number" value="${s.nextWeight}" id="w_${idx}" onchange="syncW(${idx})">
       <div class="last-refs">${wLastRefs}</div>
@@ -809,7 +811,7 @@ function buildSlide(ex, s, idx) {
     <div class="field-col">
       <div class="field-label">
         <span class="field-title">${rLabel}</span>
-        <span class="adj-chips"><span class="adj-chip" onclick="${rMinus}">\u22121</span><span class="adj-chip" onclick="${rPlus}">+1</span></span>
+        <span class="adj-group"><span class="adj-btn" onclick="${rMinus}">&minus;</span><span class="adj-btn" onclick="${rPlus}">+</span><span class="adj-step">1</span></span>
       </div>
       <input class="field-input" type="number" value="${ex.reps}" id="r_${idx}" ${rReadonly}>
       <div class="last-refs">${rLastRefs}</div>
