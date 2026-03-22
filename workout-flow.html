@@ -1353,15 +1353,17 @@ function switchTab(tab) {
 // Initialize screen visibility after all variables are defined
 switchTab('workout');
 
-// Scroll week row so today is centered
-setTimeout(() => {
+// Scroll week row so today is centered — retry until element is measured
+function scrollWeekToToday() {
   const row = document.getElementById('weekRow');
   const today = row?.querySelector('.today');
-  if (row && today) {
-    const offset = today.offsetLeft - (row.offsetWidth / 2) + (today.offsetWidth / 2);
-    row.scrollLeft = offset;
+  if (row && today && today.offsetWidth > 0) {
+    row.scrollTo({ left: today.offsetLeft - (row.offsetWidth / 2) + (today.offsetWidth / 2), behavior: 'instant' });
+  } else {
+    requestAnimationFrame(scrollWeekToToday);
   }
-}, 50);
+}
+requestAnimationFrame(scrollWeekToToday);
 
 function startSessionFromHome() {
   sessionActive = true;
