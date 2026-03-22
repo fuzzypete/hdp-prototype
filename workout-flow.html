@@ -807,7 +807,7 @@ function buildSlide(ex, s, idx) {
     <div class="field-col">
       <div class="field-label">
         <span class="field-title">Weight</span>
-        <span class="adj-group"><span class="adj-btn" onclick="adjW(${idx},-2.5)">&minus;</span><span class="adj-btn" onclick="adjW(${idx},2.5)">+</span><span class="adj-step">2.5</span></span>
+        <span class="adj-group"><span class="adj-btn" onclick="adjW(${idx},-2.5)">&minus;</span><span class="adj-btn" onclick="adjW(${idx},2.5)">+</span></span>
       </div>
       <div class="field-input-wrap">
         <input class="field-input" type="number" value="${s.nextWeight}" id="w_${idx}" onchange="syncW(${idx})">
