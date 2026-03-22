@@ -263,50 +263,54 @@
   /* -- Shared screen container -- */
   .screen { position: fixed; top: 0; bottom: 56px; left: 0; right: 0; display: none; flex-direction: column; overflow: hidden; }
   .screen.active { display: flex; }
-  .screen-hdr { background: #111827; border-bottom: 1px solid rgba(255,255,255,0.06); padding: 14px 16px 12px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .screen-hdr { background: #111827; border-bottom: 1px solid rgba(255,255,255,0.06); padding: 14px 16px 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; }
+  .screen-hdr-action { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #9CA3AF; font-size: 20px; cursor: pointer; padding: 4px; }
+  .screen-hdr-action:active { opacity: 0.6; }
   .screen-title { font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 18px; font-weight: 700; }
   .screen-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px; }
 
   /* -- Home (no session) -- */
-  .home-badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #4ade80; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); padding: 4px 12px; border-radius: 999px; margin-bottom: 14px; }
+  .home-badge { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #9CA3AF; background: rgba(34,197,94,0.06); border-left: 3px solid #22C55E; padding: 6px 12px; border-radius: 0 6px 6px 0; margin-bottom: 14px; }
   .home-greeting { font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 16px; }
   .home-sub { font-size: 14px; color: #9CA3AF; margin-bottom: 28px; }
 
   /* Session card */
-  .home-session-card { background: #0f1a16; border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 18px; margin-bottom: 20px; }
+  .home-session-card { background: #0d1510; border: 1px solid rgba(34,197,94,0.12); border-radius: 18px; padding: 18px; margin-bottom: 20px; }
   .home-session-name { font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 8px; }
   .home-session-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-  .home-meta-pill { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.05em; }
-  .home-meta-pill.phase { background: rgba(59,130,246,0.12); color: #60a5fa; }
-  .home-meta-pill.caloric { background: rgba(249,115,22,0.12); color: #fb923c; }
-  .home-meta-pill.variant { background: rgba(34,197,94,0.12); color: #4ade80; }
+  .home-meta-pill { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); color: #9CA3AF; }
+  .home-meta-pill.phase { }
+  .home-meta-pill.caloric { }
+  .home-meta-pill.variant { }
   .home-session-duration { font-size: 13px; color: #9CA3AF; margin-bottom: 14px; }
   .home-session-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
   .home-log-toggle { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #9CA3AF; }
   .home-log-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; }
-  .home-start-btn { background: linear-gradient(135deg, #22C55E, #A3E635); color: #111827; border: none; border-radius: 14px; padding: 16px; font-size: 17px; font-weight: 700; width: 100%; cursor: pointer; }
-  .home-start-btn:active { opacity: 0.9; transform: scale(0.98); }
+  .home-start-btn { background: transparent; border: 2px solid #22C55E; color: #22C55E; border-radius: 999px; padding: 10px 28px; font-size: 14px; font-weight: 600; width: auto; display: inline-block; cursor: pointer; }
+  .home-start-btn:active { opacity: 0.8; transform: scale(0.98); }
 
   /* THIS WEEK row */
   .home-section { font-size: 12px; color: #9CA3AF; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; margin-top: 4px; }
   .home-week-row { display: flex; gap: 6px; margin-bottom: 20px; overflow-x: auto; }
-  .home-day-pill { flex: 1; min-width: 0; background: #0f1a16; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 8px 4px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 3px; }
-  .home-day-pill.today { border-color: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.2); }
+  .home-day-pill { flex: 1; min-width: 0; background: #0f1a16; border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 6px 3px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .home-day-pill.today { border-color: #22c55e; box-shadow: 0 0 12px rgba(34,197,94,0.4); }
+  .home-day-pill.rest-day .day-name { color: #4B5563; }
+  .home-day-pill.rest-day .day-workout { color: #4B5563; }
   .home-day-pill .day-name { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #9CA3AF; }
   .home-day-pill.today .day-name { color: #4ade80; }
-  .home-day-pill .day-workout { font-size: 9px; color: #6B7280; line-height: 1.2; min-height: 22px; display: flex; align-items: center; }
+  .home-day-pill .day-workout { font-size: 9px; color: #6B7280; line-height: 1.2; min-height: 20px; display: flex; align-items: center; }
   .home-day-pill.today .day-workout { color: #F3F4F6; font-weight: 600; }
-  .home-day-pill .day-check { font-size: 12px; color: #22c55e; min-height: 16px; }
+  .home-day-pill .day-check { font-size: 11px; color: #22c55e; min-height: 14px; }
 
   /* Session progress + elapsed */
   .home-stats-row { display: flex; gap: 10px; margin-bottom: 20px; }
-  .home-stat-box { flex: 1; background: #0f1a16; border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 12px; text-align: center; }
+  .home-stat-box { flex: 1; background: #0d1510; border: 1px solid rgba(34,197,94,0.12); border-radius: 14px; padding: 14px; text-align: center; }
   .home-stat-label { font-size: 11px; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-  .home-stat-val { font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace; font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .home-stat-val { font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace; font-size: 20px; font-weight: 800; font-variant-numeric: tabular-nums; }
 
   /* Exercise preview list */
   .home-ex-preview { background: #0f1a16; border: 1px solid rgba(255,255,255,0.06); border-radius: 18px; overflow: hidden; margin-bottom: 24px; }
-  .home-ex-row { display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .home-ex-row { display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
   .home-ex-row:last-child { border-bottom: none; }
   .home-ex-name { font-family: 'Space Grotesk', system-ui, sans-serif; flex: 1; font-size: 14px; font-weight: 600; }
   .home-ex-last { font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace; font-size: 13px; color: #9CA3AF; font-variant-numeric: tabular-nums; }
@@ -1427,6 +1431,7 @@ function toggleSetting(key) {
 <div class="screen" id="homeScreen">
   <div class="screen-hdr">
     <div class="screen-title">TheBOS</div>
+    <div class="screen-hdr-action" onclick="switchTab('settings')">&#9881;</div>
   </div>
   <div class="screen-body">
     <div class="home-badge">GYM MODE &bull; V1</div>
@@ -1444,7 +1449,9 @@ function toggleSetting(key) {
       <div class="home-session-row">
         <div class="home-log-toggle"><div class="home-log-dot"></div> Log Workout</div>
       </div>
-      <button class="home-start-btn" onclick="startSessionFromHome()">Start Session</button>
+      <div style="text-align: center;">
+        <button class="home-start-btn" onclick="startSessionFromHome()">Start Session</button>
+      </div>
     </div>
 
     <!-- THIS WEEK -->
@@ -1460,7 +1467,7 @@ function toggleSetting(key) {
         <span class="day-workout">Lower A</span>
         <span class="day-check">&#10003;</span>
       </div>
-      <div class="home-day-pill">
+      <div class="home-day-pill rest-day">
         <span class="day-name">Wed</span>
         <span class="day-workout">Rest</span>
         <span class="day-check"></span>
@@ -1475,12 +1482,12 @@ function toggleSetting(key) {
         <span class="day-workout">Push A</span>
         <span class="day-check"></span>
       </div>
-      <div class="home-day-pill">
+      <div class="home-day-pill rest-day">
         <span class="day-name">Sat</span>
         <span class="day-workout">Rest</span>
         <span class="day-check"></span>
       </div>
-      <div class="home-day-pill">
+      <div class="home-day-pill rest-day">
         <span class="day-name">Sun</span>
         <span class="day-workout">Rest</span>
         <span class="day-check"></span>
