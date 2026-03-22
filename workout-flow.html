@@ -390,7 +390,7 @@
 </head>
 <body>
 
-<div class="header">
+<div class="header" style="display:none">
   <div class="header-left" id="headerTap">
     <div class="header-exercise" id="headerExercise"></div>
     <div class="header-progress" id="headerProgress"></div>
@@ -405,12 +405,12 @@
 </div>
 
 <!-- Progress dots -->
-<div class="progress-dots" id="progressDots"></div>
+<div class="progress-dots" id="progressDots" style="display:none"></div>
 
-<div class="carousel-container">
+<div class="carousel-container" style="display:none">
   <div class="carousel" id="carousel"></div>
 </div>
-<div class="swipe-hint" id="swipeHint">swipe left/right between exercises</div>
+<div class="swipe-hint" id="swipeHint" style="display:none">swipe left/right between exercises</div>
 
 <!-- SESSION SHEET -->
 <div class="sheet-backdrop" id="sheetBackdrop">
@@ -1428,7 +1428,7 @@ function toggleSetting(key) {
 </script>
 
 <!-- -- HOME SCREEN (no active session) -- -->
-<div class="screen" id="homeScreen">
+<div class="screen active" id="homeScreen">
   <div class="screen-hdr">
     <div class="screen-title">TheBOS</div>
     <div class="screen-hdr-action" onclick="switchTab('settings')">&#9881;</div>
