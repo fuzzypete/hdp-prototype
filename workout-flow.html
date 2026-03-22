@@ -44,18 +44,18 @@
   .superset-pip { width: 8px; height: 8px; background: #7c3aed; border-radius: 50%; flex-shrink: 0; }
 
   .compact-sets { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-  .compact-set { background: #1a2e1a; color: #4ade80; font-size: 15px; padding: 6px 12px; border-radius: 8px; cursor: pointer; }
+  .compact-set { background: #1a2e1a; color: #4ade80; font-size: 16px; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
   .compact-set:active { background: #2a4e2a; }
 
   /* Exercise history panel — collapsed bar only (tappable to open sheet) */
   .history-panel { background: #0d0d14; border: 1px solid #1e1e2e; border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
-  .history-collapsed { display: flex; align-items: center; gap: 8px; padding: 10px 12px; cursor: pointer; font-size: 15px; }
-  .history-collapsed .muscle { color: #aaa; }
+  .history-collapsed { display: flex; align-items: center; gap: 8px; padding: 12px 14px; cursor: pointer; font-size: 16px; touch-action: manipulation; }
+  .history-collapsed .muscle { color: #bbb; }
   .history-collapsed .trend { color: #5eead4; font-weight: 600; }
-  .history-collapsed .trend.flat { color: #888; }
-  .history-collapsed .sessions { color: #888; font-size: 13px; }
-  .history-collapsed .rest-info { color: #888; font-size: 13px; }
-  .history-collapsed .chevron { color: #888; font-size: 12px; margin-left: auto; }
+  .history-collapsed .trend.flat { color: #999; }
+  .history-collapsed .sessions { color: #999; font-size: 14px; }
+  .history-collapsed .rest-info { color: #999; font-size: 14px; }
+  .history-collapsed .chevron { color: #999; font-size: 14px; margin-left: auto; }
 
   /* History full-screen sheet */
   .history-sheet-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
@@ -85,8 +85,8 @@
   .set-card.resting { border-color: rgba(245,158,11,0.3); }
   .set-card.ready-state { border-color: rgba(34,197,94,0.3); }
   .set-card.superset-active { border-color: rgba(124,58,237,0.3); }
-  .set-label { font-size: 16px; color: #aaa; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
-  .set-label-tag { font-size: 13px; padding: 3px 10px; border-radius: 6px; font-weight: 600; }
+  .set-label { font-size: 17px; color: #bbb; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
+  .set-label-tag { font-size: 14px; padding: 4px 12px; border-radius: 6px; font-weight: 600; }
   .tag-resting { background: rgba(245,158,11,0.15); color: #f59e0b; }
   .tag-ready { background: rgba(34,197,94,0.15); color: #22c55e; }
   .tag-superset { background: rgba(124,58,237,0.15); color: #a78bfa; }
@@ -99,23 +99,23 @@
   .adj-stack { display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; }
   .adj-btn { background: #1a1a2e; border: 1px solid #2a2a40; color: #aaa; font-size: 18px; font-weight: 600; width: 34px; flex: 1; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; touch-action: manipulation; }
   .field-input-wrap { position: relative; width: 100%; }
-  .field-input { width: 100%; background: #0a0a14; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 24px; font-weight: 600; padding: 12px 30px 12px 4px; text-align: center; font-variant-numeric: tabular-nums; min-width: 0; }
+  .field-input { width: 100%; background: #0a0a14; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 26px; font-weight: 600; padding: 14px 32px 14px 4px; text-align: center; font-variant-numeric: tabular-nums; min-width: 0; }
   .field-input:focus { border-color: #3b82f6; outline: none; }
   .field-input:focus + .field-suffix { display: none; }
-  .field-suffix { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 13px; color: #777; font-weight: 400; pointer-events: none; }
+  .field-suffix { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 14px; color: #888; font-weight: 400; pointer-events: none; }
   .field-unit { font-size: 14px; color: #888; }
   .adj-chip:active { animation: chipFlash 0.15s; }
   /* Tappable last-value pills -- tap to apply */
-  .last-refs { display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
-  .last-ref { font-size: 13px; padding: 3px 8px; border-radius: 6px; cursor: pointer; border: 1px solid transparent; }
+  .last-refs { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+  .last-ref { font-size: 14px; padding: 5px 10px; border-radius: 6px; cursor: pointer; border: 1px solid transparent; touch-action: manipulation; }
   .last-ref.session { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); color: #a5c8ff; }
-  .last-ref.history { background: rgba(255,255,255,0.04); border-color: #2a2a2a; color: #999; }
+  .last-ref.history { background: rgba(255,255,255,0.06); border-color: #333; color: #aaa; }
   .last-ref:active { opacity: 0.7; }
 
   /* RPE selector */
-  .rpe-row { display: flex; gap: 5px; margin-top: 6px; margin-bottom: 4px; }
-  .rpe-label { font-size: 14px; color: #aaa; margin-bottom: 3px; }
-  .rpe-chip { font-size: 15px; font-weight: 600; padding: 8px 14px; border-radius: 6px; cursor: pointer; background: #1a1a2e; border: 1px solid #2a2a40; color: #888; transition: all 0.15s; }
+  .rpe-row { display: flex; gap: 6px; margin-top: 8px; margin-bottom: 4px; }
+  .rpe-label { font-size: 15px; color: #bbb; margin-bottom: 4px; }
+  .rpe-chip { font-size: 16px; font-weight: 600; padding: 10px 16px; border-radius: 8px; cursor: pointer; background: #1a1a2e; border: 1px solid #2a2a40; color: #999; transition: all 0.15s; touch-action: manipulation; }
   .rpe-chip:active { transform: scale(0.93); }
   .rpe-chip.selected { border-color: currentColor; }
   .rpe-chip.rpe-6, .rpe-chip.rpe-7 { }
@@ -124,8 +124,8 @@
   .rpe-chip.rpe-9.selected { background: rgba(249,115,22,0.15); color: #fb923c; border-color: #fb923c; }
   .rpe-chip.rpe-10.selected { background: rgba(239,68,68,0.15); color: #f87171; border-color: #f87171; }
 
-  .rep-calc { background: #0d0d18; border: 1px solid #222; border-radius: 8px; padding: 10px 14px; margin-top: 8px; font-size: 15px; color: #aaa; display: flex; justify-content: space-between; align-items: center; cursor: pointer; touch-action: manipulation; }
-  .rep-calc .est-val { color: #b8c7ff; font-weight: 600; font-size: 15px; }
+  .rep-calc { background: #0d0d18; border: 1px solid #222; border-radius: 8px; padding: 12px 14px; margin-top: 10px; font-size: 16px; color: #bbb; display: flex; justify-content: space-between; align-items: center; cursor: pointer; touch-action: manipulation; }
+  .rep-calc .est-val { color: #b8c7ff; font-weight: 600; font-size: 16px; }
   .rep-table { margin-top: 6px; border: 1px solid #222; border-radius: 8px; overflow: hidden; }
   .rep-table table { width: 100%; border-collapse: collapse; }
   .rep-table th { background: #111118; color: #888; font-size: 12px; padding: 7px 10px; text-align: center; border-bottom: 1px solid #222; }
@@ -143,18 +143,18 @@
   .rest-bar-wrap.done .rest-bar-fill { background: #22c55e; }
 
   .rest-controls { display: flex; gap: 6px; justify-content: center; margin-bottom: 12px; }
-  .rest-ctrl { background: #1a1a1a; border: 1px solid #333; color: #999; font-size: 14px; padding: 8px 16px; border-radius: 8px; cursor: pointer; }
+  .rest-ctrl { background: #1a1a1a; border: 1px solid #333; color: #bbb; font-size: 15px; padding: 10px 18px; border-radius: 8px; cursor: pointer; touch-action: manipulation; }
   .rest-ctrl.skip { color: #fdba74; border-color: #9a3412; }
 
-  .confirm-btn { background: #3b82f6; color: #fff; border: none; border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 600; width: 100%; cursor: pointer; margin-top: auto; }
+  .confirm-btn { background: #3b82f6; color: #fff; border: none; border-radius: 12px; padding: 16px; font-size: 17px; font-weight: 600; width: 100%; cursor: pointer; margin-top: auto; }
   .confirm-btn:active { background: #2563eb; transform: scale(0.98); }
   .confirm-btn.ready-btn { background: #22c55e; color: #000; }
   .confirm-btn.superset-btn { background: #7c3aed; }
   .confirm-btn:disabled { background: #333; color: #666; }
-  .remaining { font-size: 14px; color: #888; text-align: center; margin-top: 6px; }
+  .remaining { font-size: 15px; color: #999; text-align: center; margin-top: 8px; }
 
   .bottom-actions { display: flex; gap: 6px; padding-top: 8px; margin-top: 8px; }
-  .action-btn { flex: 1; background: #111; border: 1px solid #282828; color: #999; font-size: 14px; padding: 9px; border-radius: 8px; text-align: center; cursor: pointer; }
+  .action-btn { flex: 1; background: #111; border: 1px solid #333; color: #aaa; font-size: 15px; padding: 11px; border-radius: 8px; text-align: center; cursor: pointer; touch-action: manipulation; }
   .action-btn:active { background: #1a1a1a; }
 
   /* Exercise notes input */
