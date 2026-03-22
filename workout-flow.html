@@ -12,7 +12,7 @@
   body { font-family: 'Manrope', system-ui, sans-serif; background: #0B1915; background: radial-gradient(circle at 20% 20%, #0B1915 0%, transparent 45%), linear-gradient(135deg, #0B1915 0%, #111827 60%, #0C131F 100%); color: #F3F4F6; height: 100dvh; overflow: hidden; user-select: none; }
 
   .header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: #111827; border-bottom: 1px solid rgba(255,255,255,0.06); padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; }
-  .header-left { display: flex; flex-direction: column; gap: 1px; flex: 1; cursor: pointer; }
+  .header-left { display: flex; flex-direction: column; gap: 1px; flex: 1; cursor: pointer; touch-action: manipulation; }
   .header-exercise { font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 16px; font-weight: 600; color: #F3F4F6; }
   .header-progress { font-size: 12px; color: #9CA3AF; }
   .header-right { display: flex; align-items: center; gap: 8px; }
@@ -888,6 +888,7 @@ function buildSlide(ex, s, idx) {
     <div class="action-btn" onclick="addSet(${idx})">+ Set</div>
     <div class="action-btn" onclick="skipExercise(${idx})">Skip</div>
     <div class="action-btn" onclick="swapExercise(${idx})">Swap</div>
+    <div class="action-btn" style="color:#ef4444;border-color:rgba(239,68,68,0.2)" onclick="openEndSession()">End</div>
   </div>${noteInput}` : '';
 
   return `${ssBar}${chips}${histPanel}${restBarHTML}
