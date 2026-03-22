@@ -1316,7 +1316,6 @@ document.getElementById('historySheetBackdrop').addEventListener('click', e=>{if
 document.getElementById('restDoneBadge').addEventListener('click', ()=>{if(restOriginSlide!==null)goToSlide(restOriginSlide);});
 
 render();
-switchTab('workout'); // initialize visibility based on sessionActive
 setInterval(()=>{
   const hr = Math.floor(130+Math.random()*30);
   document.getElementById('hrBadge').textContent = hr;
@@ -1345,6 +1344,9 @@ function switchTab(tab) {
   document.querySelectorAll('.bnav-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
 }
+
+// Initialize screen visibility after all variables are defined
+switchTab('workout');
 
 function startSessionFromHome() {
   sessionActive = true;
