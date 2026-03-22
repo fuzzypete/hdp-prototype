@@ -35,10 +35,10 @@
   .progress-dot.completed { background: #22c55e; }
   .progress-dot.skipped { background: #555; position: relative; }
 
-  .carousel-container { position: fixed; top: 76px; bottom: 56px; left: 0; right: 0; overflow: hidden; }
+  .carousel-container { position: fixed; top: 76px; bottom: 56px; left: 0; right: 0; overflow: hidden; touch-action: pan-y; }
   .carousel { display: flex; transition: transform 0.3s cubic-bezier(0.25,0.1,0.25,1); height: 100%; }
   .carousel.dragging { transition: none; }
-  .slide { min-width: 100%; max-width: 100%; height: 100%; padding: 12px 16px; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+  .slide { min-width: 100%; max-width: 100%; height: 100%; padding: 12px 16px; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; touch-action: manipulation; }
 
   .superset-header { background: rgba(124,58,237,0.1); border: 1px solid rgba(124,58,237,0.3); border-radius: 8px; padding: 6px 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: #a78bfa; }
   .superset-pip { width: 8px; height: 8px; background: #7c3aed; border-radius: 50%; flex-shrink: 0; }
@@ -97,7 +97,7 @@
   .field-label { font-size: 15px; color: #aaa; display: flex; align-items: center; gap: 6px; }
   .field-label .field-title { font-size: 15px; color: #aaa; }
   .field-label .adj-group { display: flex; align-items: center; gap: 3px; margin-left: auto; }
-  .adj-btn { background: #1a1a2e; border: 1px solid #2a2a40; color: #aaa; font-size: 20px; font-weight: 600; width: 36px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; }
+  .adj-btn { background: #1a1a2e; border: 1px solid #2a2a40; color: #aaa; font-size: 20px; font-weight: 600; width: 36px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; touch-action: manipulation; }
   .adj-btn:active { background: #2a2a40; transform: scale(0.95); }
   .adj-step { font-size: 14px; color: #999; flex-shrink: 0; }
   .field-input-wrap { position: relative; width: 100%; }
@@ -126,7 +126,7 @@
   .rpe-chip.rpe-9.selected { background: rgba(249,115,22,0.15); color: #fb923c; border-color: #fb923c; }
   .rpe-chip.rpe-10.selected { background: rgba(239,68,68,0.15); color: #f87171; border-color: #f87171; }
 
-  .rep-calc { background: #0d0d18; border: 1px solid #222; border-radius: 8px; padding: 10px 14px; margin-top: 8px; font-size: 15px; color: #aaa; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+  .rep-calc { background: #0d0d18; border: 1px solid #222; border-radius: 8px; padding: 10px 14px; margin-top: 8px; font-size: 15px; color: #aaa; display: flex; justify-content: space-between; align-items: center; cursor: pointer; touch-action: manipulation; }
   .rep-calc .est-val { color: #b8c7ff; font-weight: 600; font-size: 15px; }
   .rep-table { margin-top: 6px; border: 1px solid #222; border-radius: 8px; overflow: hidden; }
   .rep-table table { width: 100%; border-collapse: collapse; }
